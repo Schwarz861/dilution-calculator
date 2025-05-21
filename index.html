@@ -9,40 +9,29 @@
     :root {
       --bg-color: #F0F8FF;
       --text-color: #333;
-      --container-bg: #FFF;
-      --input-bg: #FFF;
-      --button-primary: #005EB8;
-      --button-primary-hover: #004799;
-      --button-clear: #fff176;
-      --button-clear-hover: #ffee58;
-      --result-bg: #E6F2FF;
+      --container-bg: rgba(255,255,255,0.8);
+      --input-bg: rgba(255,255,255,0.8);
+      --primary-gradient: linear-gradient(135deg, #4e7cf3, #1f59d8);
+      --primary-gradient-hover: linear-gradient(135deg, #1f59d8, #4e7cf3);
+      --clear-color: #fff176;
+      --clear-hover: #ffee58;
+      --result-bg: rgba(255,255,255,0.8);
       --result-border: #005EB8;
+      --shadow: rgba(0,0,0,0.15);
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
         --bg-color: #121212;
         --text-color: #EEE;
-        --container-bg: #1E1E1E;
-        --input-bg: #2E2E2E;
-        --button-primary: #333;
-        --button-primary-hover: #555;
-        --button-clear: #fff176;
-        --button-clear-hover: #ffee58;
-        --result-bg: #333;
-        --result-border: #EEE;
+        --container-bg: rgba(30,30,30,0.8);
+        --input-bg: rgba(30,30,30,0.8);
       }
     }
     :root[data-theme="dark"] {
       --bg-color: #121212;
       --text-color: #EEE;
-      --container-bg: #1E1E1E;
-      --input-bg: #2E2E2E;
-      --button-primary: #333;
-      --button-primary-hover: #555;
-      --button-clear: #fff176;
-      --button-clear-hover: #ffee58;
-      --result-bg: #333;
-      --result-border: #EEE;
+      --container-bg: rgba(30,30,30,0.8);
+      --input-bg: rgba(30,30,30,0.8);
     }
     body {
       font-family: 'Noto Sans TC', sans-serif;
@@ -57,10 +46,11 @@
       width: calc(100% - 40px);
       margin: 20px auto;
       background: var(--container-bg);
-      padding: 50px 30px 30px;
-      box-sizing: border-box;
+      backdrop-filter: blur(10px);
       border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 60px 30px 30px;
+      box-sizing: border-box;
+      box-shadow: 0 8px 20px var(--shadow);
     }
     .top-controls {
       position: absolute;
@@ -70,30 +60,19 @@
       gap: 8px;
     }
     .top-controls button {
-      white-space: nowrap;
-      padding: 6px 12px;
+      padding: 8px 16px;
       font-size: 0.9em;
       border: none;
-      border-radius: 6px;
+      border-radius: 9999px;
       cursor: pointer;
-      background: var(--button-primary);
+      background: var(--primary-gradient);
       color: #fff;
+      box-shadow: 0 4px 12px var(--shadow);
       transition: background .3s;
     }
-    .top-controls button:hover {
-      background: var(--button-primary-hover);
-    }
-    h1 {
-      margin: 0 0 20px;
-      text-align: center;
-      font-size: 1.6em;
-    }
-    label {
-      display: block;
-      font-weight: bold;
-      font-size: 1.1em;
-      margin: 12px 0 8px;
-    }
+    .top-controls button:hover { background: var(--primary-gradient-hover); }
+    h1 { margin: 0 0 20px; text-align: center; font-size: 1.6em; }
+    label { display: block; font-weight: bold; font-size: 1.1em; margin: 12px 0 8px; }
     input {
       width: 100%;
       padding: 12px;
@@ -102,6 +81,8 @@
       border: 1px solid #ccc;
       background: var(--input-bg);
       color: var(--text-color);
+      backdrop-filter: blur(5px);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
       transition: background .3s, color .3s;
       box-sizing: border-box;
     }
@@ -113,9 +94,11 @@
       text-align: left;
       line-height: 1.6;
       background: var(--result-bg);
+      backdrop-filter: blur(10px);
       border: 1px solid var(--result-border);
       border-radius: 10px;
       min-height: 1.5em;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
       box-sizing: border-box;
       transition: background .3s, border-color .3s;
     }
@@ -124,42 +107,35 @@
       justify-content: space-between;
       gap: 10px;
       margin-top: 30px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
     .buttons button {
       flex: 1;
-      padding: 16px 0;
-      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+      padding: 14px 20px;
+      font-size: 1.1em;
       border: none;
-      border-radius: 8px;
+      border-radius: 9999px;
       color: #fff;
       cursor: pointer;
+      box-shadow: 0 4px 12px var(--shadow);
       transition: background .3s;
     }
-    #btn-calc,
-    #btn-copy {
-      background: var(--button-primary);
-    }
-    #btn-calc:hover,
-    #btn-copy:hover {
-      background: var(--button-primary-hover);
-    }
+    #btn-calc, #btn-copy { background: var(--primary-gradient); }
+    #btn-calc:hover, #btn-copy:hover { background: var(--primary-gradient-hover); }
     #btn-clear {
-      background: var(--button-clear);
+      background: var(--clear-color);
       color: #333;
     }
-    #btn-clear:hover {
-      background: var(--button-clear-hover);
-    }
+    #btn-clear:hover { background: var(--clear-hover); }
     @media (max-width: 480px) {
-      .container {
-        padding: 60px 20px 20px;
-      }
-      .top-controls {
-        position: static;
-        justify-content: flex-end;
-        margin-bottom: 20px;
-      }
+      .container { padding: 60px 20px 20px; }
+      .top-controls { position: static; justify-content: flex-end; margin-bottom: 20px; }
+      .buttons { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -239,35 +215,13 @@
       document.getElementById('btn-clear').textContent = t.btnClear;
       document.getElementById('btn-copy').textContent = t.btnCopy;
       document.getElementById('lang-toggle').textContent = t.langToggle;
-      updateThemeBtn();
-      calculate();
+      updateThemeBtn(); calculate();
     }
-    function toggleLanguage() {
-      currentLang = currentLang === 'zh' ? 'en' : 'zh';
-      localStorage.setItem('lang', currentLang);
-      applyLanguage();
-    }
+    function toggleLanguage() { currentLang = currentLang === 'zh' ? 'en' : 'zh'; localStorage.setItem('lang', currentLang); applyLanguage(); }
     document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
-    function updateThemeBtn() {
-      const t = texts[currentLang];
-      const btn = document.getElementById('theme-toggle');
-      const cur = document.documentElement.getAttribute('data-theme') ||
-                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      btn.textContent = cur === 'dark' ? t.themeLight : t.themeDark;
-    }
-    function initTheme() {
-      const saved = localStorage.getItem('theme');
-      if (['light','dark'].includes(saved))
-        document.documentElement.setAttribute('data-theme', saved);
-      updateThemeBtn();
-    }
-    function toggleTheme() {
-      const cur = document.documentElement.getAttribute('data-theme');
-      const next = cur === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      updateThemeBtn();
-    }
+    function updateThemeBtn() { const t = texts[currentLang]; const btn = document.getElementById('theme-toggle'); const cur = document.documentElement.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); btn.textContent = cur === 'dark' ? t.themeLight : t.themeDark; }
+    function initTheme() { const saved = localStorage.getItem('theme'); if (['light','dark'].includes(saved)) document.documentElement.setAttribute('data-theme', saved); updateThemeBtn(); }
+    function toggleTheme() { const cur = document.documentElement.getAttribute('data-theme'); const next = cur === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next); updateThemeBtn(); }
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
     function calculate() {
       const c1 = parseFloat(document.getElementById('c1').value);
@@ -277,10 +231,7 @@
       const t = texts[currentLang];
       if (!c2Val || !v2Val) { resultEl.innerHTML = ''; return; }
       const c2 = parseFloat(c2Val);
-      if (c1 < c2) {
-        resultEl.innerHTML = t.errorStock;
-        return;
-      }
+      if (c1 < c2) { resultEl.innerHTML = t.errorStock; return; }
       const v2 = parseFloat(v2Val);
       const v1 = (c2 * v2) / c1;
       const v1Str = parseFloat(v1.toFixed(6)).toString();
