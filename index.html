@@ -7,85 +7,159 @@
   <style>
     html, body { margin: 0; padding: 0; overflow-x: hidden; }
     :root {
-      --bg-color: #F0F8FF; --text-color: #333;
-      --container-bg: #FFF; --input-bg: #FFF;
-      --button-bg: #005EB8; --button-hover-bg: #004799;
-      --result-bg: #E6F2FF; --result-border: #005EB8;
+      --bg-color: #F0F8FF;
+      --text-color: #333;
+      --container-bg: #FFF;
+      --input-bg: #FFF;
+      --button-primary: #005EB8;
+      --button-primary-hover: #004799;
+      --button-clear: #fff176;
+      --button-clear-hover: #ffee58;
+      --result-bg: #E6F2FF;
+      --result-border: #005EB8;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
-        --bg-color:#121212; --text-color:#EEE;
-        --container-bg:#1E1E1E; --input-bg:#2E2E2E;
-        --button-bg:#333; --button-hover-bg:#555;
-        --result-bg:#333; --result-border:#EEE;
+        --bg-color: #121212;
+        --text-color: #EEE;
+        --container-bg: #1E1E1E;
+        --input-bg: #2E2E2E;
+        --button-primary: #333;
+        --button-primary-hover: #555;
+        --button-clear: #fff176;
+        --button-clear-hover: #ffee58;
+        --result-bg: #333;
+        --result-border: #EEE;
       }
     }
     :root[data-theme="dark"] {
-      --bg-color:#121212; --text-color:#EEE;
-      --container-bg:#1E1E1E; --input-bg:#2E2E2E;
-      --button-bg:#333; --button-hover-bg:#555;
-      --result-bg:#333; --result-border:#EEE;
+      --bg-color: #121212;
+      --text-color: #EEE;
+      --container-bg: #1E1E1E;
+      --input-bg: #2E2E2E;
+      --button-primary: #333;
+      --button-primary-hover: #555;
+      --button-clear: #fff176;
+      --button-clear-hover: #ffee58;
+      --result-bg: #333;
+      --result-border: #EEE;
     }
     body {
-      font-family:'Noto Sans TC',sans-serif;
-      background:var(--bg-color); color:var(--text-color);
-      padding:20px; transition:background .3s,color .3s;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      padding: 20px;
+      transition: background .3s, color .3s;
     }
     .container {
-      position:relative;
-      max-width:500px; width:100%; margin:20px auto;
-      background:var(--container-bg);
-      padding:50px 30px 30px; box-sizing:border-box;
-      border-radius:15px;
-      box-shadow:0 4px 8px rgba(0,0,0,0.1);
+      position: relative;
+      max-width: 500px;
+      width: calc(100% - 40px);
+      margin: 20px auto;
+      background: var(--container-bg);
+      padding: 50px 30px 30px;
+      box-sizing: border-box;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .top-controls {
-      position:absolute; top:16px; right:16px;
-      display:flex; gap:8px;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
     }
     .top-controls button {
-      white-space:nowrap; padding:6px 12px;
-      font-size:0.9em; border:none; border-radius:6px;
-      cursor:pointer; background:var(--button-bg);
-      color:#fff; transition:background .3s;
+      white-space: nowrap;
+      padding: 6px 12px;
+      font-size: 0.9em;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--button-primary);
+      color: #fff;
+      transition: background .3s;
     }
-    .top-controls button:hover { background:var(--button-hover-bg); }
+    .top-controls button:hover {
+      background: var(--button-primary-hover);
+    }
     h1 {
-      margin:0 0 20px; text-align:center;
-      font-size:1.6em;
+      margin: 0 0 20px;
+      text-align: center;
+      font-size: 1.6em;
     }
     label {
-      display:block; font-weight:bold;
-      font-size:1.1em; margin:12px 0 8px;
+      display: block;
+      font-weight: bold;
+      font-size: 1.1em;
+      margin: 12px 0 8px;
     }
     input {
-      width:100%; padding:12px; font-size:1em;
-      border-radius:8px; border:1px solid #ccc;
-      background:var(--input-bg); color:var(--text-color);
-      transition:background .3s,color .3s;
-      box-sizing:border-box;
+      width: 100%;
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: var(--input-bg);
+      color: var(--text-color);
+      transition: background .3s, color .3s;
+      box-sizing: border-box;
     }
     .result {
-      margin-top:25px; padding:20px;
-      font-size:1.3em; font-weight:bold;
-      text-align:center; background:var(--result-bg);
-      border:1px solid var(--result-border);
-      border-radius:10px; min-height:1.5em;
-      box-sizing:border-box; transition:background .3s,border-color .3s;
+      margin-top: 25px;
+      padding: 20px;
+      font-size: 1.3em;
+      font-weight: bold;
+      text-align: left;
+      line-height: 1.6;
+      background: var(--result-bg);
+      border: 1px solid var(--result-border);
+      border-radius: 10px;
+      min-height: 1.5em;
+      box-sizing: border-box;
+      transition: background .3s, border-color .3s;
     }
     .buttons {
-      display:flex; justify-content:space-between;
-      gap:10px; margin-top:30px; flex-wrap:wrap;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 30px;
+      flex-wrap: wrap;
     }
     .buttons button {
-      flex:1; padding:16px 0; font-size:1.2em;
-      border:none; border-radius:8px;
-      background:var(--button-bg); color:#fff;
-      cursor:pointer; transition:background .3s;
+      flex: 1;
+      padding: 16px 0;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: background .3s;
     }
-    .buttons button:hover { background:var(--button-hover-bg); }
-    @media (max-width:480px) {
-      .container { padding:60px 20px 20px; }
+    #btn-calc,
+    #btn-copy {
+      background: var(--button-primary);
+    }
+    #btn-calc:hover,
+    #btn-copy:hover {
+      background: var(--button-primary-hover);
+    }
+    #btn-clear {
+      background: var(--button-clear);
+      color: #333;
+    }
+    #btn-clear:hover {
+      background: var(--button-clear-hover);
+    }
+    @media (max-width: 480px) {
+      .container {
+        padding: 60px 20px 20px;
+      }
+      .top-controls {
+        position: static;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+      }
     }
   </style>
 </head>
@@ -105,20 +179,147 @@
     <div class="result" id="result"></div>
     <div class="buttons">
       <button id="btn-calc"></button>
+      <button id="btn-clear"></button>
       <button id="btn-copy"></button>
     </div>
   </div>
   <script>
-    const texts={zh:{title:'次氯酸水稀釋濃度計算器',labelC1:'原始濃度 (ppm)：',labelC2:'目標濃度 (ppm)：',labelV2:'目標水量 (公升)：',phC2:'請輸入目標濃度',phV2:'請輸入目標水量',btnCalc:'🔁 計算',btnCopy:'📋 複製結果',resultPrefix:'需要加入的原液量為：',mlText:'相當於',mlUnit:'毫升',alertCopied:'結果已複製！',alertError:'請先計算結果再複製！',themeLight:'☀️ 淺色模式',themeDark:'🌙 深色模式',langToggle:'EN'},en:{title:'HOCl Dilution Calculator',labelC1:'Original Concentration (ppm):',labelC2:'Target Concentration (ppm):',labelV2:'Target Volume (L):',phC2:'Enter target concentration',phV2:'Enter target volume',btnCalc:'🔁 Calculate',btnCopy:'📋 Copy Result',resultPrefix:'Required Volume:',mlText:'Equivalent to',mlUnit:'mL',alertCopied:'Result copied!',alertError:'Please calculate before copying!',themeLight:'☀️ Light Mode',themeDark:'🌙 Dark Mode',langToggle:'中'}};
-    let currentLang=localStorage.getItem('lang')||'zh';
-    function applyLanguage(){const t=texts[currentLang];document.getElementById('title').textContent=t.title;document.getElementById('label-c1').textContent=t.labelC1;document.getElementById('label-c2').textContent=t.labelC2;document.getElementById('label-v2').textContent=t.labelV2;document.getElementById('c2').placeholder=t.phC2;document.getElementById('v2').placeholder=t.phV2;document.getElementById('btn-calc').textContent=t.btnCalc;document.getElementById('btn-copy').textContent=t.btnCopy;updateThemeBtn();document.getElementById('lang-toggle').textContent=t.langToggle;calculate();}
-    function toggleLanguage(){currentLang=currentLang==='zh'?'en':'zh';localStorage.setItem('lang',currentLang);applyLanguage();}
-    document.getElementById('lang-toggle').addEventListener('click',toggleLanguage);
-    function updateThemeBtn(){const t=texts[currentLang],btn=document.getElementById('theme-toggle'),cur=document.documentElement.getAttribute('data-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');btn.textContent=cur==='dark'?t.themeLight:t.themeDark;}
-    function initTheme(){const saved=localStorage.getItem('theme');if(['light','dark'].includes(saved))document.documentElement.setAttribute('data-theme',saved);updateThemeBtn();}
-    function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme'),next=cur==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',next);localStorage.setItem('theme',next);updateThemeBtn();}
-    function calculate(){const c1=parseFloat(document.getElementById('c1').value),c2Val=document.getElementById('c2').value,v2Val=document.getElementById('v2').value,resultEl=document.getElementById('result');if(!c2Val||!v2Val){resultEl.innerHTML='';return;}const c2=parseFloat(c2Val),v2=parseFloat(v2Val),v1=(c2*v2)/c1,v1Str=parseFloat(v1.toFixed(6)).toString(),t=texts[currentLang];let html=`${t.resultPrefix} ${v1Str} ${currentLang==='zh'?'公升':'L'}`;const dec=v1Str.includes('.')?v1Str.split('.')[1].length:0;if(dec>2){const ml=parseFloat((v1*1000).toFixed(6)).toString();html+=`<br>${t.mlText} ${ml} ${t.mlUnit}`;}resultEl.innerHTML=html;}
-    function copyResult(){const t=texts[currentLang],text=document.getElementById('result').innerText.replace(/\n/g,' ');if(!text){alert(t.alertError);return;}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>alert(t.alertCopied)).catch(()=>fallback(text));}else fallback(text);}function fallback(txt){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert(texts[currentLang].alertCopied);}document.getElementById('theme-toggle').addEventListener('click',toggleTheme);document.getElementById('btn-calc').addEventListener('click',calculate);document.getElementById('btn-copy').addEventListener('click',copyResult);applyLanguage();initTheme();
+    const texts = {
+      zh: {
+        title: '次氯酸水稀釋濃度計算器',
+        labelC1: '原始濃度 (ppm)：',
+        labelC2: '目標濃度 (ppm)：',
+        labelV2: '目標水量 (公升)：',
+        phC2: '請輸入目標濃度',
+        phV2: '請輸入目標水量',
+        btnCalc: '🔁 計算',
+        btnClear: '🗑️ 清除',
+        btnCopy: '📋 複製結果',
+        resultPrefix: '需要加入的原液量為：',
+        mlText: '相當於',
+        mlUnit: '毫升',
+        errorStock: '原液濃度低於目標濃度，需用更高濃度進行稀釋。',
+        alertCopied: '結果已複製！',
+        alertError: '請先計算結果再複製！',
+        themeLight: '☀️ 淺色模式',
+        themeDark: '🌙 深色模式',
+        langToggle: 'EN'
+      },
+      en: {
+        title: 'HOCl Dilution Calculator',
+        labelC1: 'Original Concentration (ppm):',
+        labelC2: 'Target Concentration (ppm):',
+        labelV2: 'Target Volume (L):',
+        phC2: 'Enter target concentration',
+        phV2: 'Enter target volume',
+        btnCalc: '🔁 Calculate',
+        btnClear: '🗑️ Clear',
+        btnCopy: '📋 Copy Result',
+        resultPrefix: 'Required Volume:',
+        mlText: 'Equivalent to',
+        mlUnit: 'mL',
+        errorStock: 'Original concentration is lower than target concentration, please use a higher concentration stock to dilute.',
+        alertCopied: 'Result copied!',
+        alertError: 'Please calculate before copying!',
+        themeLight: '☀️ Light Mode',
+        themeDark: '🌙 Dark Mode',
+        langToggle: '中'
+      }
+    };
+    let currentLang = localStorage.getItem('lang') || 'zh';
+    function applyLanguage() {
+      const t = texts[currentLang];
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('label-c1').textContent = t.labelC1;
+      document.getElementById('label-c2').textContent = t.labelC2;
+      document.getElementById('label-v2').textContent = t.labelV2;
+      document.getElementById('c2').placeholder = t.phC2;
+      document.getElementById('v2').placeholder = t.phV2;
+      document.getElementById('btn-calc').textContent = t.btnCalc;
+      document.getElementById('btn-clear').textContent = t.btnClear;
+      document.getElementById('btn-copy').textContent = t.btnCopy;
+      document.getElementById('lang-toggle').textContent = t.langToggle;
+      updateThemeBtn();
+      calculate();
+    }
+    function toggleLanguage() {
+      currentLang = currentLang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', currentLang);
+      applyLanguage();
+    }
+    document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
+    function updateThemeBtn() {
+      const t = texts[currentLang];
+      const btn = document.getElementById('theme-toggle');
+      const cur = document.documentElement.getAttribute('data-theme') ||
+                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      btn.textContent = cur === 'dark' ? t.themeLight : t.themeDark;
+    }
+    function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (['light','dark'].includes(saved))
+        document.documentElement.setAttribute('data-theme', saved);
+      updateThemeBtn();
+    }
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeBtn();
+    }
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    function calculate() {
+      const c1 = parseFloat(document.getElementById('c1').value);
+      const c2Val = document.getElementById('c2').value;
+      const v2Val = document.getElementById('v2').value;
+      const resultEl = document.getElementById('result');
+      const t = texts[currentLang];
+      if (!c2Val || !v2Val) { resultEl.innerHTML = ''; return; }
+      const c2 = parseFloat(c2Val);
+      if (c1 < c2) {
+        resultEl.innerHTML = t.errorStock;
+        return;
+      }
+      const v2 = parseFloat(v2Val);
+      const v1 = (c2 * v2) / c1;
+      const v1Str = parseFloat(v1.toFixed(6)).toString();
+      let html = `${t.resultPrefix} ${v1Str} ${currentLang === 'zh' ? '公升' : 'L'}`;
+      const dec = v1Str.includes('.') ? v1Str.split('.')[1].length : 0;
+      if (dec > 2) {
+        const ml = parseFloat((v1 * 1000).toFixed(6)).toString();
+        html += `<br>${t.mlText} ${ml} ${t.mlUnit}`;
+      }
+      resultEl.innerHTML = html;
+    }
+    function clearFields() {
+      document.getElementById('c2').value = '';
+      document.getElementById('v2').value = '';
+      document.getElementById('result').innerHTML = '';
+    }
+    document.getElementById('btn-clear').addEventListener('click', clearFields);
+    function copyResult() {
+      const t = texts[currentLang];
+      const text = document.getElementById('result').innerText.replace(/\n/g, ' ');
+      if (!text) { alert(t.alertError); return; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => alert(t.alertCopied)).catch(() => fallback(text));
+      } else {
+        fallback(text);
+      }
+    }
+    function fallback(txt) {
+      const ta = document.createElement('textarea');
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert(texts[currentLang].alertCopied);
+    }
+    document.getElementById('btn-calc').addEventListener('click', calculate);
+    document.getElementById('btn-copy').addEventListener('click', copyResult);
+    applyLanguage(); initTheme();
   </script>
 </body>
 </html>
