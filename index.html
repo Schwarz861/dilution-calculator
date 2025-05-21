@@ -104,7 +104,7 @@
     /*==== Result ====*/
     .result {
       margin-top:20px; padding:20px;
-      font-size:1.1em; font-weight:bold; line-height:1.6;
+      font-size: 1em; /* 微調按鈕文字大小 */ font-weight:bold; line-height:1.6;
       background:var(--result-bg); backdrop-filter:blur(15px);
       border:none; border-radius:12px;
       box-shadow:inset 0 2px 6px rgba(0,0,0,0.1);
@@ -117,14 +117,21 @@
       gap:16px; margin-top:30px;
     }
     .buttons button {
-      flex:none; width:140px; /* 固定寬度，確保中英文一致 */
+      flex:none; /* 移除固定寬度，改為最小寬度自適應 */ min-width: 160px; /* 提高最小寬度以適應英文 */ /* 固定寬度，確保中英文一致 */
       display:flex; align-items:center; justify-content:center;
       gap:8px; padding:12px 0; height:48px;
       font-size:1.1em; border:none; border-radius:8px;
       background:var(--btn-bg); backdrop-filter:blur(15px);
-      white-space:nowrap; color:var(--btn-text);
+      /* 允許多行換行顯示 */white-space: normal;word-break: keep-all;min-height: 48px; /* 最小高度 */height: auto; color:var(--btn-text);
       box-shadow:0 4px 8px var(--btn-shadow);
       cursor:pointer; transition:filter .3s,transform .1s;
+    
+      /* 改為平均分配寬度，自動調整不溢出 */
+      flex: 1;
+      padding: 12px 12px; /* 減少左右內邊距 */
+      max-width: none; /* 取消固定寬度 */
+      min-width: 0; /* 允許縮小 */
+      white-space: nowrap;
     }
     .buttons button:hover {
       filter:brightness(1.1);
@@ -137,7 +144,9 @@
       .top-controls{position:static;justify-content:flex-end;margin-bottom:20px;}
       .buttons{flex-wrap:wrap;}
     }
-  </style>
+    /* 特別縮小 Copy Result 英文 */
+  #btn-copy { font-size: 0.9em; }
+</style>
 </head>
 <body>
   <div class="container">
