@@ -2,19 +2,20 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>次氯酸水稀釋濃度計算器 | HOCl Dilution Calculator</title>
   <style>
     /*==== Reset ====*/
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-    html, body { width:100%; height:100%; overflow-x:hidden; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow-x: hidden; }
     body {
-      font-family:'Noto Sans TC', sans-serif;
-      transition:background .3s, color .3s;
-      background:var(--bg-color);
-      color:var(--text-color);
-      padding:20px;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: background .3s, color .3s;
+      padding: 20px;
     }
+
     /*==== Theme Variables ====*/
     :root {
       --bg-color: #F0F8FF;
@@ -26,12 +27,13 @@
       --btn-bg: #fff;
       --btn-text: #333;
       --btn-shadow: rgba(0,0,0,0.08);
-      --primary-grad: linear-gradient(135deg,#4e7cf3,#1f59d8);
-      --primary-grad-hover: linear-gradient(135deg,#1f59d8,#4e7cf3);
-      --clear-grad: linear-gradient(135deg,#fff176,#ffee58);
-      --clear-grad-hover: linear-gradient(135deg,#ffee58,#fff176);
+      --primary-grad: linear-gradient(135deg, #4e7cf3, #1f59d8);
+      --primary-grad-hover: linear-gradient(135deg, #1f59d8, #4e7cf3);
+      --clear-grad: linear-gradient(135deg, #fff176, #ffee58);
+      --clear-grad-hover: linear-gradient(135deg, #ffee58, #fff176);
       --shadow: rgba(0,0,0,0.15);
     }
+    /* 系統預設深色 */
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
         --bg-color: #121212;
@@ -45,6 +47,7 @@
         --btn-shadow: rgba(0,0,0,0.5);
       }
     }
+    /* 手動切換主題 */
     [data-theme="dark"] {
       --bg-color: #121212;
       --text-color: #EEE;
@@ -56,66 +59,97 @@
       --btn-text: #fff;
       --btn-shadow: rgba(0,0,0,0.5);
     }
+
     /*==== Container ====*/
     .container {
-      max-width:500px; width:100%; margin:20px auto;
-      background:var(--glass-bg); backdrop-filter:blur(15px);
-      border:1px solid var(--glass-border); border-radius:20px;
-      padding:60px 30px 30px; position:relative;
-      box-shadow:0 8px 20px var(--shadow);
+      max-width: 500px;
+      margin: 20px auto;
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 60px 30px 30px;
+      position: relative;
+      box-shadow: 0 8px 20px var(--shadow);
     }
+
     /*==== Top Controls ====*/
     .top-controls {
-      position:absolute; top:16px; right:16px;
-      display:flex; gap:8px;
+      position: absolute; top: 16px; right: 16px;
+      display: flex; gap: 8px;
     }
     .top-controls button {
-      padding:8px 16px; border:none; border-radius:6px;
-      background:var(--primary-grad); color:#fff;
-      font-size:.9em; cursor:pointer;
-      box-shadow:0 4px 12px var(--shadow);
-      transition:background .3s;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary-grad);
+      color: #fff;
+      font-size: .9em;
+      cursor: pointer;
+      box-shadow: 0 4px 12px var(--shadow);
+      transition: background .3s;
     }
     .top-controls button:hover {
-      background:var(--primary-grad-hover);
+      background: var(--primary-grad-hover);
     }
+
     /*==== Form ====*/
-    h1 { text-align:center; margin-bottom:20px; font-size:1.6em; }
-    label { display:block; margin:12px 0 8px; font-weight:bold; }
+    h1 { text-align: center; margin-bottom: 20px; font-size: 1.6em; }
+    label { display: block; margin: 12px 0 8px; font-weight: bold; }
     input {
-      width:100%; padding:12px; font-size:1em;
-      border-radius:8px; border:1px solid rgba(0,0,0,0.1);
-      background:var(--input-bg); backdrop-filter:blur(10px);
-      box-shadow:inset 0 2px 6px rgba(0,0,0,0.1);
-      color:var(--text-color);
+      width: 100%; padding: 12px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: var(--input-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+      color: var(--text-color);
     }
+
     /*==== Result ====*/
     .result {
-      margin-top:20px; padding:20px;
-      font-size:1em; font-weight:bold; line-height:1.6;
-      background:var(--result-bg); backdrop-filter:blur(15px);
-      border-radius:12px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
-      color:var(--text-color);
+      margin-top: 20px;
+      padding: 20px;
+      font-weight: bold;
+      line-height: 1.6;
+      background: var(--result-bg);
+      backdrop-filter: blur(15px);
+      border-radius: 12px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+      color: var(--text-color);
+      font-size: 1em;
     }
+
     /*==== Buttons ====*/
     .buttons {
-      display:flex; justify-content:space-between;
-      gap:16px; margin-top:30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 30px;
     }
     .buttons button {
-      flex:1; min-width:0;
-      padding:0; height:48px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:1em; border:none; border-radius:8px;
-      background:var(--btn-bg); backdrop-filter:blur(15px);
-      color:var(--btn-text);
-      box-shadow:0 4px 8px var(--btn-shadow);
-      cursor:pointer; transition:filter .3s,transform .1s;
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      height: 48px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      box-shadow: 0 4px 8px var(--btn-shadow);
+      cursor: pointer;
+      text-align: center;
+      transition: filter .3s, transform .1s;
+      white-space: nowrap;
     }
     .buttons button:hover {
-      filter:brightness(1.1);
-      transform:translateY(-2px);
+      filter: brightness(1.1);
+      transform: translateY(-2px);
     }
+
+    /*==== Responsive ====*/
     @media(max-width:480px){
       .container{padding:60px 20px 20px;}
       .top-controls{position:static;justify-content:flex-end;margin-bottom:20px;}
@@ -131,11 +165,11 @@
     </div>
     <h1 id="title"></h1>
     <label id="label-c1" for="c1"></label>
-    <input id="c1" type="number" value="2000">
+    <input id="c1" type="number" value="2000" />
     <label id="label-c2" for="c2"></label>
-    <input id="c2" type="number" placeholder="">
+    <input id="c2" type="number" placeholder="" />
     <label id="label-v2" for="v2"></label>
-    <input id="v2" type="number" placeholder="">
+    <input id="v2" type="number" placeholder="" />
     <div class="result" id="result"></div>
     <div class="buttons">
       <button id="btn-calc"></button>
@@ -143,6 +177,7 @@
       <button id="btn-copy"></button>
     </div>
   </div>
+
   <script>
     const texts = {
       zh: {
@@ -187,6 +222,7 @@
       }
     };
     let lang = localStorage.getItem('lang') || 'zh';
+
     function applyLanguage() {
       const t = texts[lang];
       document.getElementById('title').textContent = t.title;
@@ -199,23 +235,30 @@
       document.getElementById('btn-clear').textContent = t.btnClear;
       document.getElementById('btn-copy').textContent = t.btnCopy;
       document.getElementById('lang-toggle').textContent = t.langToggle;
-      updateThemeBtn(); calculate();
+      updateThemeBtn();
+      calculate();
     }
+
     function toggleLanguage() {
       lang = lang === 'zh' ? 'en' : 'zh';
       localStorage.setItem('lang', lang);
       applyLanguage();
     }
     document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
+
     function updateThemeBtn() {
       const t = texts[lang];
       const btn = document.getElementById('theme-toggle');
-      const cur = document.documentElement.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const cur = document.documentElement.getAttribute('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       btn.textContent = cur === 'dark' ? t.themeLight : t.themeDark;
     }
+
     function initTheme() {
       const saved = localStorage.getItem('theme');
-      if (saved === 'light' || saved === 'dark') document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
       updateThemeBtn();
     }
     function toggleTheme() {
@@ -226,45 +269,49 @@
       updateThemeBtn();
     }
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
     function calculate() {
       const c1 = parseFloat(document.getElementById('c1').value);
       const c2v = document.getElementById('c2').value;
       const v2v = document.getElementById('v2').value;
-      const res = document.getElementById('result');
+      const resEl = document.getElementById('result');
       const t = texts[lang];
-      if (!c2v || !v2v) { res.innerHTML = ''; return; }
+      if (!c2v || !v2v) { resEl.innerHTML = ''; return; }
       const c2 = parseFloat(c2v);
-      if (c1 < c2) { res.innerHTML = t.errorStock; return; }
+      if (c1 < c2) { resEl.innerHTML = t.errorStock; return; }
       const v2 = parseFloat(v2v);
       const v1 = (c2 * v2) / c1;
       const v1s = parseFloat(v1.toFixed(6)).toString();
-      let html = `${t.resultPrefix} ${v1s} ${lang==='zh'?'公升':'L'}`;
-      const dec = v1s.includes('.')?v1s.split('.')[1].length:0;
-      if (dec > 2) {
-        const ml = parseFloat((v1*1000).toFixed(6)).toString();
+      let html = `${t.resultPrefix} ${v1s} ${lang === 'zh' ? '公升' : 'L'}`;
+      if (v1s.split('.')[1]?.length > 2) {
+        const ml = parseFloat((v1 * 1000).toFixed(6)).toString();
         html += `<br>${t.mlText} ${ml} ${t.mlUnit}`;
       }
-      res.innerHTML = html;
+      resEl.innerHTML = html;
     }
+    document.getElementById('btn-calc').addEventListener('click', calculate);
+
     function clearFields() {
       document.getElementById('c2').value = '';
       document.getElementById('v2').value = '';
+      document.getElementById('c1').value = '2000';
       document.getElementById('result').innerHTML = '';
     }
+    document.getElementById('btn-clear').addEventListener('click', clearFields);
+
     function copyResult() {
       const t = texts[lang];
-      const txt = document.getElementById('result').innerText.replace(/\n/g,' ');
-      if (!txt) return alert(t.alertError);
-      navigator.clipboard?.writeText(txt).then(()=>alert(t.alertCopied), ()=>{
-        const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta);
-        ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-        alert(t.alertCopied);
-      });
+      const txt = document.getElementById('result').innerText.replace(/\n/g, ' ');
+      if (!txt) { return alert(t.alertError); }
+      navigator.clipboard?.writeText(txt).then(
+        () => alert(t.alertCopied),
+        () => { alert(t.alertCopied); }
+      );
     }
-    document.getElementById('btn-calc').addEventListener('click', calculate);
-    document.getElementById('btn-clear').addEventListener('click', clearFields);
     document.getElementById('btn-copy').addEventListener('click', copyResult);
-    applyLanguage(); initTheme();
+
+    applyLanguage();
+    initTheme();
   </script>
 </body>
 </html>
