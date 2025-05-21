@@ -15,7 +15,6 @@
       color:var(--text-color);
       padding:20px;
     }
-
     /*==== Theme Variables ====*/
     :root {
       --bg-color: #F0F8FF;
@@ -24,17 +23,15 @@
       --glass-border: rgba(255,255,255,0.5);
       --input-bg: var(--glass-bg);
       --result-bg: var(--glass-bg);
+      --btn-bg: #fff;
+      --btn-text: #333;
+      --btn-shadow: rgba(0,0,0,0.08);
       --primary-grad: linear-gradient(135deg,#4e7cf3,#1f59d8);
       --primary-grad-hover: linear-gradient(135deg,#1f59d8,#4e7cf3);
       --clear-grad: linear-gradient(135deg,#fff176,#ffee58);
       --clear-grad-hover: linear-gradient(135deg,#ffee58,#fff176);
       --shadow: rgba(0,0,0,0.15);
-
-      --btn-bg: #fff;
-      --btn-text: #333;
-      --btn-shadow: rgba(0,0,0,0.08);
     }
-    /* 系統預設深色：當 data-theme 尚未手動設定 時套用 */
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
         --bg-color: #121212;
@@ -48,7 +45,6 @@
         --btn-shadow: rgba(0,0,0,0.5);
       }
     }
-    /* 手動切換後強制主題 */
     [data-theme="dark"] {
       --bg-color: #121212;
       --text-color: #EEE;
@@ -60,7 +56,6 @@
       --btn-text: #fff;
       --btn-shadow: rgba(0,0,0,0.5);
     }
-
     /*==== Container ====*/
     .container {
       max-width:500px; width:100%; margin:20px auto;
@@ -69,7 +64,6 @@
       padding:60px 30px 30px; position:relative;
       box-shadow:0 8px 20px var(--shadow);
     }
-
     /*==== Top Controls ====*/
     .top-controls {
       position:absolute; top:16px; right:16px;
@@ -85,14 +79,9 @@
     .top-controls button:hover {
       background:var(--primary-grad-hover);
     }
-
     /*==== Form ====*/
-    h1 {
-      text-align:center; margin-bottom:20px; font-size:1.6em;
-    }
-    label {
-      display:block; margin:12px 0 8px; font-weight:bold;
-    }
+    h1 { text-align:center; margin-bottom:20px; font-size:1.6em; }
+    label { display:block; margin:12px 0 8px; font-weight:bold; }
     input {
       width:100%; padding:12px; font-size:1em;
       border-radius:8px; border:1px solid rgba(0,0,0,0.1);
@@ -100,53 +89,39 @@
       box-shadow:inset 0 2px 6px rgba(0,0,0,0.1);
       color:var(--text-color);
     }
-
     /*==== Result ====*/
     .result {
       margin-top:20px; padding:20px;
-      font-size: 1em; /* 微調按鈕文字大小 */ font-weight:bold; line-height:1.6;
+      font-size:1em; font-weight:bold; line-height:1.6;
       background:var(--result-bg); backdrop-filter:blur(15px);
-      border:none; border-radius:12px;
-      box-shadow:inset 0 2px 6px rgba(0,0,0,0.1);
+      border-radius:12px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
       color:var(--text-color);
     }
-
     /*==== Buttons ====*/
     .buttons {
-      display:flex; justify-content:space-evenly;
+      display:flex; justify-content:space-between;
       gap:16px; margin-top:30px;
     }
     .buttons button {
-      flex:none; /* 移除固定寬度，改為最小寬度自適應 */ min-width: 160px; /* 提高最小寬度以適應英文 */ /* 固定寬度，確保中英文一致 */
+      flex:1; min-width:0;
+      padding:0; height:48px;
       display:flex; align-items:center; justify-content:center;
-      gap:8px; padding:12px 0; height:48px;
-      font-size:1.1em; border:none; border-radius:8px;
+      font-size:1em; border:none; border-radius:8px;
       background:var(--btn-bg); backdrop-filter:blur(15px);
-      /* 允許多行換行顯示 */white-space: normal;word-break: keep-all;min-height: 48px; /* 最小高度 */height: auto; color:var(--btn-text);
+      color:var(--btn-text);
       box-shadow:0 4px 8px var(--btn-shadow);
       cursor:pointer; transition:filter .3s,transform .1s;
-    
-      /* 改為平均分配寬度，自動調整不溢出 */
-      flex: 1;
-      padding: 12px 12px; /* 減少左右內邊距 */
-      max-width: none; /* 取消固定寬度 */
-      min-width: 0; /* 允許縮小 */
-      white-space: nowrap;
     }
     .buttons button:hover {
       filter:brightness(1.1);
       transform:translateY(-2px);
     }
-
-    /*==== Responsive ====*/
     @media(max-width:480px){
       .container{padding:60px 20px 20px;}
       .top-controls{position:static;justify-content:flex-end;margin-bottom:20px;}
       .buttons{flex-wrap:wrap;}
     }
-    /* 特別縮小 Copy Result 英文 */
-  #btn-copy { font-size: 0.9em; }
-</style>
+  </style>
 </head>
 <body>
   <div class="container">
@@ -168,41 +143,51 @@
       <button id="btn-copy"></button>
     </div>
   </div>
-
   <script>
     const texts = {
       zh: {
-        title:'次氯酸水稀釋濃度計算器',
-        labelC1:'原始濃度 (ppm)：',
-        labelC2:'目標濃度 (ppm)：',
-        labelV2:'目標水量 (公升)：',
-        phC2:'請輸入目標濃度', phV2:'請輸入目標水量',
-        btnCalc:'🔁 計算', btnClear:'🗑️ 清除', btnCopy:'📋 複製結果',
-        resultPrefix:'需要加入的原液量為：',
-        mlText:'相當於', mlUnit:'毫升',
-        errorStock:'原液濃度低於目標濃度，<br>需用更高濃度進行稀釋。',
-        alertCopied:'結果已複製！', alertError:'請先計算結果再複製！',
-        themeLight:'☀️ 淺色模式', themeDark:'🌙 深色模式',
-        langToggle:'EN'
+        title: '次氯酸水稀釋濃度計算器',
+        labelC1: '原始濃度 (ppm)：',
+        labelC2: '目標濃度 (ppm)：',
+        labelV2: '目標水量 (公升)：',
+        phC2: '請輸入目標濃度',
+        phV2: '請輸入目標水量',
+        btnCalc: '計算',
+        btnClear: '清除',
+        btnCopy: '複製結果',
+        resultPrefix: '需要加入的原液量為：',
+        mlText: '相當於',
+        mlUnit: '毫升',
+        errorStock: '原液濃度低於目標濃度，需用更高濃度進行稀釋。',
+        alertCopied: '結果已複製！',
+        alertError: '請先計算結果再複製！',
+        themeLight: '淺色模式',
+        themeDark: '深色模式',
+        langToggle: 'EN'
       },
       en: {
-        title:'HOCl Dilution Calculator',
-        labelC1:'Original Concentration (ppm):',
-        labelC2:'Target Concentration (ppm):',
-        labelV2:'Target Volume (L):',
-        phC2:'Enter target concentration', phV2:'Enter target volume',
-        btnCalc:'🔁 Calculate', btnClear:'🗑️ Clear', btnCopy:'📋 Copy Result',
-        resultPrefix:'Required Volume:',
-        mlText:'Equivalent to', mlUnit:'mL',
-        errorStock:'Original concentration is lower than target concentration.<br>Please use a higher concentration<br>stock to dilute.',
-        alertCopied:'Result copied!', alertError:'Please calculate before copying!',
-        themeLight:'☀️ Light Mode', themeDark:'🌙 Dark Mode',
-        langToggle:'中'
+        title: 'HOCl Dilution Calculator',
+        labelC1: 'Original Concentration (ppm):',
+        labelC2: 'Target Concentration (ppm):',
+        labelV2: 'Target Volume (L):',
+        phC2: 'Enter target concentration',
+        phV2: 'Enter target volume',
+        btnCalc: 'Calculate',
+        btnClear: 'Clear',
+        btnCopy: 'Copy Result',
+        resultPrefix: 'Required Volume:',
+        mlText: 'Equivalent to',
+        mlUnit: 'mL',
+        errorStock: 'Original concentration is lower than target concentration. Please use a higher concentration stock to dilute.',
+        alertCopied: 'Result copied!',
+        alertError: 'Please calculate before copying!',
+        themeLight: 'Light Mode',
+        themeDark: 'Dark Mode',
+        langToggle: '中'
       }
     };
     let lang = localStorage.getItem('lang') || 'zh';
-
-    function applyLanguage(){
+    function applyLanguage() {
       const t = texts[lang];
       document.getElementById('title').textContent = t.title;
       document.getElementById('label-c1').textContent = t.labelC1;
@@ -214,80 +199,72 @@
       document.getElementById('btn-clear').textContent = t.btnClear;
       document.getElementById('btn-copy').textContent = t.btnCopy;
       document.getElementById('lang-toggle').textContent = t.langToggle;
-      updateThemeBtn();
-      calculate();
+      updateThemeBtn(); calculate();
     }
-    function toggleLanguage(){
-      lang = lang==='zh'?'en':'zh';
-      localStorage.setItem('lang',lang);
+    function toggleLanguage() {
+      lang = lang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', lang);
       applyLanguage();
     }
-    document.getElementById('lang-toggle').addEventListener('click',toggleLanguage);
-
-    function updateThemeBtn(){
+    document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
+    function updateThemeBtn() {
       const t = texts[lang];
       const btn = document.getElementById('theme-toggle');
-      const cur = document.documentElement.getAttribute('data-theme')
-                || (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
-      btn.textContent = cur==='dark'?t.themeLight:t.themeDark;
+      const cur = document.documentElement.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      btn.textContent = cur === 'dark' ? t.themeLight : t.themeDark;
     }
-    function initTheme(){
+    function initTheme() {
       const saved = localStorage.getItem('theme');
-      if(saved==='light'||saved==='dark'){
-        document.documentElement.setAttribute('data-theme', saved);
-      }
+      if (saved === 'light' || saved === 'dark') document.documentElement.setAttribute('data-theme', saved);
       updateThemeBtn();
     }
-    function toggleTheme(){
+    function toggleTheme() {
       const cur = document.documentElement.getAttribute('data-theme');
-      const next = cur==='dark'?'light':'dark';
+      const next = cur === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
       updateThemeBtn();
     }
-    document.getElementById('theme-toggle').addEventListener('click',toggleTheme);
-
-    function calculate(){
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    function calculate() {
       const c1 = parseFloat(document.getElementById('c1').value);
-      const c2v = document.getElementById('c2').value,
-            v2v = document.getElementById('v2').value;
+      const c2v = document.getElementById('c2').value;
+      const v2v = document.getElementById('v2').value;
       const res = document.getElementById('result');
       const t = texts[lang];
-      if(!c2v||!v2v){ res.innerHTML=''; return; }
+      if (!c2v || !v2v) { res.innerHTML = ''; return; }
       const c2 = parseFloat(c2v);
-      if(c1 < c2){ res.innerHTML = t.errorStock; return; }
+      if (c1 < c2) { res.innerHTML = t.errorStock; return; }
       const v2 = parseFloat(v2v);
-      const v1 = (c2*v2)/c1;
+      const v1 = (c2 * v2) / c1;
       const v1s = parseFloat(v1.toFixed(6)).toString();
       let html = `${t.resultPrefix} ${v1s} ${lang==='zh'?'公升':'L'}`;
       const dec = v1s.includes('.')?v1s.split('.')[1].length:0;
-      if(dec>2){
+      if (dec > 2) {
         const ml = parseFloat((v1*1000).toFixed(6)).toString();
         html += `<br>${t.mlText} ${ml} ${t.mlUnit}`;
       }
       res.innerHTML = html;
     }
-    function clearFields(){
-      document.getElementById('c2').value='';
-      document.getElementById('v2').value='';
-      document.getElementById('result').innerHTML='';
+    function clearFields() {
+      document.getElementById('c2').value = '';
+      document.getElementById('v2').value = '';
+      document.getElementById('result').innerHTML = '';
     }
-    function copyResult(){
+    function copyResult() {
       const t = texts[lang];
       const txt = document.getElementById('result').innerText.replace(/\n/g,' ');
-      if(!txt){ return alert(t.alertError); }
-      navigator.clipboard?.writeText(txt).then(
-        ()=>alert(t.alertCopied),
-        ()=>{ const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert(t.alertCopied); }
-      );
+      if (!txt) return alert(t.alertError);
+      navigator.clipboard?.writeText(txt).then(()=>alert(t.alertCopied), ()=>{
+        const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        alert(t.alertCopied);
+      });
     }
-    document.getElementById('btn-calc').addEventListener('click',calculate);
-    document.getElementById('btn-clear').addEventListener('click',clearFields);
-    document.getElementById('btn-copy').addEventListener('click',copyResult);
-
-    applyLanguage();
-    initTheme();
+    document.getElementById('btn-calc').addEventListener('click', calculate);
+    document.getElementById('btn-clear').addEventListener('click', clearFields);
+    document.getElementById('btn-copy').addEventListener('click', copyResult);
+    applyLanguage(); initTheme();
   </script>
 </body>
 </html>
-
