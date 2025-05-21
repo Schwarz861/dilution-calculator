@@ -5,53 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>次氯酸水稀釋濃度計算器 | HOCl Dilution Calculator</title>
   <style>
-    html, body { margin: 0; padding: 0; overflow-x: hidden; }
-    :root {
-      --bg-color: #F0F8FF;
-      --text-color: #333;
-      --container-bg: rgba(255,255,255,0.8);
-      --input-bg: rgba(255,255,255,0.8);
-      --primary-gradient: linear-gradient(135deg, #4e7cf3, #1f59d8);
-      --primary-gradient-hover: linear-gradient(135deg, #1f59d8, #4e7cf3);
-      --clear-color: #fff176;
-      --clear-hover: #ffee58;
-      --result-bg: rgba(255,255,255,0.8);
-      --result-border: #005EB8;
-      --shadow: rgba(0,0,0,0.15);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme]) {
-        --bg-color: #121212;
-        --text-color: #EEE;
-        --container-bg: rgba(30,30,30,0.8);
-        --input-bg: rgba(30,30,30,0.8);
-      }
-    }
-    :root[data-theme="dark"] {
-      --bg-color: #121212;
-      --text-color: #EEE;
-      --container-bg: rgba(30,30,30,0.8);
-      --input-bg: rgba(30,30,30,0.8);
-    }
+    /* 全域樣式重置 */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow-x: hidden; }
     body {
       font-family: 'Noto Sans TC', sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
+      background: #F0F8FF;
+      color: #333;
       padding: 20px;
       transition: background .3s, color .3s;
     }
+    /* 主題變數 */
+    :root {
+      --bg-color: #F0F8FF;
+      --text-color: #333;
+      --glass-bg: rgba(255,255,255,0.8);
+      --glass-border: rgba(255,255,255,0.5);
+      --primary-grad: linear-gradient(135deg, #4e7cf3, #1f59d8);
+      --primary-grad-hover: linear-gradient(135deg, #1f59d8, #4e7cf3);
+      --clear-grad: linear-gradient(135deg, #fff176, #ffee58);
+      --clear-grad-hover: linear-gradient(135deg, #ffee58, #fff176);
+      --shadow: rgba(0,0,0,0.15);
+    
+      --btn-bg: #ffffff;
+      --btn-text: #333333;
+      --btn-shadow: rgba(0, 0, 0, 0.08);
+    }
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #EEE;
+      --glass-bg: rgba(30,30,30,0.8);
+      --glass-border: rgba(255,255,255,0.2);
+    
+      --btn-bg: #2e2e2e;
+      --btn-text: #eeeeee;
+      --btn-shadow: rgba(0, 0, 0, 0.5);
+    
+      /* 按鈕維持淺色 */
+      --btn-bg: #ffffff;
+      --btn-text: #333333;
+      --btn-shadow: rgba(0, 0, 0, 0.08);
+    
+      /* 深色模式下按鈕背景變更為半透明深灰 */
+      --btn-bg: rgba(255,255,255,0.1);
+      --btn-text: #fff;
+      --btn-shadow: rgba(0,0,0,0.5);
+    
+      /* 深色模式下輸入框與結果區塊明顯對比 */
+      --input-bg: rgba(50,50,50,0.9);
+      --glass-bg: rgba(30,30,30,0.95);
+      --result-bg: rgba(40,40,40,0.95);
+      --glass-border: rgba(255,255,255,0.2);
+    }
+    body { background: var(--bg-color); color: var(--text-color); }
+    /* 容器 */
     .container {
-      position: relative;
       max-width: 500px;
-      width: calc(100% - 40px);
+      width: 100%;
       margin: 20px auto;
-      background: var(--container-bg);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
       padding: 60px 30px 30px;
-      box-sizing: border-box;
+      position: relative;
       box-shadow: 0 8px 20px var(--shadow);
     }
+    /* 上方主題及語言切換 */
     .top-controls {
       position: absolute;
       top: 16px;
@@ -61,77 +81,105 @@
     }
     .top-controls button {
       padding: 8px 16px;
-      font-size: 0.9em;
       border: none;
-      border-radius: 9999px;
-      cursor: pointer;
-      background: var(--primary-gradient);
+      border-radius: 6px;
+      background: var(--primary-grad);
       color: #fff;
+      font-size: 0.9em;
+      cursor: pointer;
       box-shadow: 0 4px 12px var(--shadow);
       transition: background .3s;
     }
-    .top-controls button:hover { background: var(--primary-gradient-hover); }
-    h1 { margin: 0 0 20px; text-align: center; font-size: 1.6em; }
-    label { display: block; font-weight: bold; font-size: 1.1em; margin: 12px 0 8px; }
+    .top-controls button:hover { background: var(--primary-grad-hover); }
+    /* 標題 */
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.6em;
+    }
+    /* 標籤及輸入框 */
+    label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
     input {
       width: 100%;
       padding: 12px;
       font-size: 1em;
       border-radius: 8px;
-      border: 1px solid #ccc;
-      background: var(--input-bg);
-      color: var(--text-color);
-      backdrop-filter: blur(5px);
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
-      transition: background .3s, color .3s;
-      box-sizing: border-box;
-    }
-    .result {
-      margin-top: 25px;
-      padding: 20px;
-      font-size: 1.3em;
-      font-weight: bold;
-      text-align: left;
-      line-height: 1.6;
-      background: var(--result-bg);
+      border: 1px solid rgba(0,0,0,0.1);
+      background: var(--glass-bg);
       backdrop-filter: blur(10px);
-      border: 1px solid var(--result-border);
-      border-radius: 10px;
-      min-height: 1.5em;
       box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
-      box-sizing: border-box;
-      transition: background .3s, border-color .3s;
-    }
+      color: var(--text-color);
+    ; background: var(--input-bg) !important; border: 1px solid rgba(255,255,255,0.2) !important; }
+    /* 結果區塊 */
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      font-size: 1.1em;
+      font-weight: bold;
+      line-height: 1.6;
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      border: none;
+      border-radius: 12px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+      color: var(--text-color);
+    ; background: var(--result-bg) !important; border: 1px solid rgba(255,255,255,0.2) !important; }
+    /* 按鈕列 */
     .buttons {
       display: flex;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: space-evenly; /* 改為平均間隔 */
+      gap: 16px;
       margin-top: 30px;
-      flex-wrap: nowrap;
     }
     .buttons button {
-      flex: 1;
+      flex: none; /* 取消平均寬度，回歸自動撐開 */
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      white-space: nowrap;
-      padding: 14px 20px;
+      padding: 12px 24px;
+      height: 48px;
       font-size: 1.1em;
       border: none;
-      border-radius: 9999px;
-      color: #fff;
+      border-radius: 8px;
+      /* 透明毛玻璃材質 */
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      /* 防止文字換行 */
+      white-space: nowrap;
+      color: var(--text-color);
+      box-shadow: 0 4px 8px var(--btn-shadow);
       cursor: pointer;
-      box-shadow: 0 4px 12px var(--shadow);
-      transition: background .3s;
+      transition: filter .3s, transform .1s;
+    
+      /* 固定寬度，確保中英文相同 */
+      width: 120px;
+      white-space: nowrap;
+          min-width: 140px; /* 防止英文被裁切 */      overflow: visible; /* 顯示完整內容 */    }
+    #btn-calc { border: 2px solid transparent; border-image: var(--primary-grad) 1; }
+    #btn-calc:hover { border-image: var(--primary-grad-hover) 1; }
+    #btn-clear { border: 2px solid transparent; border-image: var(--clear-grad) 1; }
+    #btn-clear:hover { border-image: var(--clear-grad-hover) 1; }
+    #btn-copy {$1; font-size: 0.9em; /* 微調字體，避免溢出 */}
+    #btn-copy:hover { border-image: var(--primary-grad-hover) 1; }
+    /* 響應式 */
+    /* 強制覆蓋底部按鈕漸層樣式為純色 */
+    #btn-calc, #btn-clear, #btn-copy {
+      border: none !important;
+      background: var(--btn-bg) !important;
+      color: var(--btn-text) !important;
+      box-shadow: 0 2px 4px var(--btn-shadow) !important;
     }
-    #btn-calc, #btn-copy { background: var(--primary-gradient); }
-    #btn-calc:hover, #btn-copy:hover { background: var(--primary-gradient-hover); }
-    #btn-clear {
-      background: var(--clear-color);
-      color: #333;
+    #btn-calc:hover, #btn-clear:hover, #btn-copy:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
     }
-    #btn-clear:hover { background: var(--clear-hover); }
+
     @media (max-width: 480px) {
       .container { padding: 60px 20px 20px; }
       .top-controls { position: static; justify-content: flex-end; margin-bottom: 20px; }
@@ -146,12 +194,12 @@
       <button id="lang-toggle"></button>
     </div>
     <h1 id="title"></h1>
-    <label for="c1" id="label-c1"></label>
-    <input type="number" id="c1" value="2000">
-    <label for="c2" id="label-c2"></label>
-    <input type="number" id="c2" placeholder="">
-    <label for="v2" id="label-v2"></label>
-    <input type="number" id="v2" placeholder="">
+    <label id="label-c1" for="c1"></label>
+    <input id="c1" type="number" value="2000" />
+    <label id="label-c2" for="c2"></label>
+    <input id="c2" type="number" placeholder="" />
+    <label id="label-v2" for="v2"></label>
+    <input id="v2" type="number" placeholder="" />
     <div class="result" id="result"></div>
     <div class="buttons">
       <button id="btn-calc"></button>
@@ -174,7 +222,7 @@
         resultPrefix: '需要加入的原液量為：',
         mlText: '相當於',
         mlUnit: '毫升',
-        errorStock: '原液濃度低於目標濃度，需用更高濃度進行稀釋。',
+        errorStock: '原液濃度低於目標濃度，<br>需用更高濃度進行稀釋。',
         alertCopied: '結果已複製！',
         alertError: '請先計算結果再複製！',
         themeLight: '☀️ 淺色模式',
@@ -194,7 +242,7 @@
         resultPrefix: 'Required Volume:',
         mlText: 'Equivalent to',
         mlUnit: 'mL',
-        errorStock: 'Original concentration is lower than target concentration, please use a higher concentration stock to dilute.',
+        errorStock: 'Original concentration is lower than target concentration.<br>Please use a higher concentration<br>stock to dilute.',
         alertCopied: 'Result copied!',
         alertError: 'Please calculate before copying!',
         themeLight: '☀️ Light Mode',
@@ -202,9 +250,9 @@
         langToggle: '中'
       }
     };
-    let currentLang = localStorage.getItem('lang') || 'zh';
+    let lang = localStorage.getItem('lang') || 'zh';
     function applyLanguage() {
-      const t = texts[currentLang];
+      const t = texts[lang];
       document.getElementById('title').textContent = t.title;
       document.getElementById('label-c1').textContent = t.labelC1;
       document.getElementById('label-c2').textContent = t.labelC2;
@@ -217,31 +265,51 @@
       document.getElementById('lang-toggle').textContent = t.langToggle;
       updateThemeBtn(); calculate();
     }
-    function toggleLanguage() { currentLang = currentLang === 'zh' ? 'en' : 'zh'; localStorage.setItem('lang', currentLang); applyLanguage(); }
+    function toggleLanguage() {
+      lang = lang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', lang);
+      applyLanguage();
+    }
     document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
-    function updateThemeBtn() { const t = texts[currentLang]; const btn = document.getElementById('theme-toggle'); const cur = document.documentElement.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); btn.textContent = cur === 'dark' ? t.themeLight : t.themeDark; }
-    function initTheme() { const saved = localStorage.getItem('theme'); if (['light','dark'].includes(saved)) document.documentElement.setAttribute('data-theme', saved); updateThemeBtn(); }
-    function toggleTheme() { const cur = document.documentElement.getAttribute('data-theme'); const next = cur === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next); updateThemeBtn(); }
+    function updateThemeBtn() {
+      const t = texts[lang];
+      const btn = document.getElementById('theme-toggle');
+      const cur = document.documentElement.getAttribute('data-theme') ||
+                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      btn.textContent = cur === 'dark' ? t.themeLight : t.themeDark;
+    }
+    function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (['light','dark'].includes(saved)) document.documentElement.setAttribute('data-theme', saved);
+      updateThemeBtn();
+    }
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeBtn();
+    }
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
     function calculate() {
       const c1 = parseFloat(document.getElementById('c1').value);
-      const c2Val = document.getElementById('c2').value;
-      const v2Val = document.getElementById('v2').value;
-      const resultEl = document.getElementById('result');
-      const t = texts[currentLang];
-      if (!c2Val || !v2Val) { resultEl.innerHTML = ''; return; }
-      const c2 = parseFloat(c2Val);
-      if (c1 < c2) { resultEl.innerHTML = t.errorStock; return; }
-      const v2 = parseFloat(v2Val);
+      const c2v = document.getElementById('c2').value;
+      const v2v = document.getElementById('v2').value;
+      const res = document.getElementById('result');
+      const t = texts[lang];
+      if (!c2v || !v2v) { res.innerHTML = ''; return; }
+      const c2 = parseFloat(c2v);
+      if (c1 < c2) { res.innerHTML = t.errorStock; return; }
+      const v2 = parseFloat(v2v);
       const v1 = (c2 * v2) / c1;
-      const v1Str = parseFloat(v1.toFixed(6)).toString();
-      let html = `${t.resultPrefix} ${v1Str} ${currentLang === 'zh' ? '公升' : 'L'}`;
-      const dec = v1Str.includes('.') ? v1Str.split('.')[1].length : 0;
+      const v1s = parseFloat(v1.toFixed(6)).toString();
+      let html = `${t.resultPrefix} ${v1s} ${lang === 'zh' ? '公升' : 'L'}`;
+      const dec = v1s.includes('.') ? v1s.split('.')[1].length : 0;
       if (dec > 2) {
         const ml = parseFloat((v1 * 1000).toFixed(6)).toString();
         html += `<br>${t.mlText} ${ml} ${t.mlUnit}`;
       }
-      resultEl.innerHTML = html;
+      res.innerHTML = html;
     }
     function clearFields() {
       document.getElementById('c2').value = '';
@@ -250,14 +318,12 @@
     }
     document.getElementById('btn-clear').addEventListener('click', clearFields);
     function copyResult() {
-      const t = texts[currentLang];
-      const text = document.getElementById('result').innerText.replace(/\n/g, ' ');
-      if (!text) { alert(t.alertError); return; }
+      const t = texts[lang];
+      const txt = document.getElementById('result').innerText.replace(/\n/g, ' ');
+      if (!txt) { alert(t.alertError); return; }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => alert(t.alertCopied)).catch(() => fallback(text));
-      } else {
-        fallback(text);
-      }
+        navigator.clipboard.writeText(txt).then(() => alert(t.alertCopied)).catch(() => fallback(txt));
+      } else fallback(txt);
     }
     function fallback(txt) {
       const ta = document.createElement('textarea');
@@ -266,7 +332,7 @@
       ta.select();
       document.execCommand('copy');
       document.body.removeChild(ta);
-      alert(texts[currentLang].alertCopied);
+      alert(texts[lang].alertCopied);
     }
     document.getElementById('btn-calc').addEventListener('click', calculate);
     document.getElementById('btn-copy').addEventListener('click', copyResult);
