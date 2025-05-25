@@ -197,24 +197,24 @@
             background-color: var(--button-hover-bg-color);
         }
         button.clear-button {
-            background-color: var(--clear-button-bg-color); /* 使用新的清除按鈕顏色變數 */
+            background-color: var(--clear-button-bg-color); 
         }
         button.clear-button:hover {
-            background-color: var(--clear-button-hover-bg-color); /* 使用新的清除按鈕懸停顏色變數 */
+            background-color: var(--clear-button-hover-bg-color); 
         }
         button.copy-button {
-            background-color: var(--copy-button-bg-color); /* 使用複製按鈕顏色變數 */
+            background-color: var(--copy-button-bg-color); 
         }
         button.copy-button:hover {
-            background-color: var(--copy-button-hover-bg-color); /* 使用複製按鈕懸停顏色變數 */
+            background-color: var(--copy-button-hover-bg-color); 
         }
 
         .settings-buttons {
             margin-top: 30px; 
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between; /* 改為 space-between 使按鈕分散對齊 */
             gap: 10px;
-            flex-wrap: wrap;
+            /* flex-wrap: wrap; (移除，讓按鈕優先在同一行) */
         }
         button.toggle-button {
             padding: 10px 15px;
@@ -227,8 +227,10 @@
             font-weight: 500;
             transition: background-color 0.2s ease, color 0.3s ease, border-color 0.3s ease, transform 0.1s ease;
             text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
-            flex-basis: calc(50% - 5px);
-            max-width: 200px;
+            flex-grow: 1; /* 讓按鈕平均分配空間 */
+            flex-basis: 0; /* 允許按鈕縮小 */
+            min-width: 120px; /* 設定最小寬度 */
+            text-align: center;
         }
          body.dark-mode button.toggle-button {
             text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
@@ -264,18 +266,18 @@
             font-size: 16px;
             line-height: 1.7; 
             display: flex; 
-            align-items: baseline; /* 改為 baseline 以更好地對齊文字和選擇器 */
+            align-items: baseline; 
             flex-wrap: wrap;
         }
-        .result p .result-label { /* 新增 class 給標籤文字 */
-            margin-right: 8px; /* 標籤和數值間的距離 */
-            flex-shrink: 0; /* 防止標籤文字被壓縮 */
+        .result p .result-label { 
+            margin-right: 8px; 
+            flex-shrink: 0; 
         }
-        .result p .result-value-group { /* 包裹數值和單位/選擇器 */
+        .result p .result-value-group { 
             display: inline-flex; 
             align-items: baseline; 
-            flex-grow: 1; /* 允許佔用剩餘空間 */
-            min-width: 100px; /* 避免過度壓縮 */
+            flex-grow: 1; 
+            min-width: 100px; 
         }
         .result p .result-value { 
             margin-right: 5px;
@@ -352,25 +354,25 @@
             .button-group {
                 grid-template-columns: 1fr;
             }
-            .settings-buttons button.toggle-button {
-                 flex-basis: 100%;
-                 margin-bottom: 10px;
+            .settings-buttons {
+                /* flex-wrap: nowrap; (移除，允許換行以防按鈕文字過長) */
             }
-             .settings-buttons button.toggle-button:last-child {
-                 margin-bottom: 0;
+            .settings-buttons button.toggle-button {
+                 /* flex-basis: auto; (移除，讓 flex-grow 生效) */
+                 /* margin-bottom: 10px; (如果希望它們換行時有間距，可以保留) */
             }
             .result p {
-                /* 維持 flex-direction: row; align-items: baseline; 以嘗試同行顯示 */
+                /* 維持預設的 flex-direction: row 和 align-items: baseline */
             }
             .result p:not(:first-child) .result-value-group { 
-                /* 對於帶有選擇器的行，如果空間不足，允許選擇器換行 */
-                 /* display: block;  若要強制換行選擇器，可取消此註解 */
-                 /* width: 100%; */
+                /* 允許帶有選擇器的行在空間不足時，選擇器可以換到下一行 */
+                 /* display: block; (如果需要強制換行) */
+                 /* width: 100%; (如果需要強制換行) */
             }
             select.result-unit-selector {
-                /* margin-left: 0; (如果上面 display:block，則不需要) */
-                /* margin-top: 5px; (如果上面 display:block，則不需要) */
-                /* width: 100%; (如果上面 display:block，則不需要) */
+                /* margin-left: 0; (如果上面 display:block) */
+                /* margin-top: 5px; (如果上面 display:block) */
+                /* width: 100%; (如果上面 display:block) */
             }
         }
     </style>
@@ -390,7 +392,7 @@
         <div class="input-group">
             <label for="targetConcentration" data-lang-key="targetConcentrationLabel">目標濃度 (ppm):</label>
             <div class="input-field-wrapper">
-                <input type="number" id="targetConcentration" data-lang-key-placeholder="targetConcentrationPlaceholder" placeholder="例如：100" class="input-field">
+                <input type="number" id="targetConcentration" data-lang-key-placeholder="targetConcentrationPlaceholder" placeholder="請輸入稀釋的目標濃度" class="input-field">
             </div>
             <span id="targetConcentrationError" class="error-message"></span>
         </div>
@@ -398,7 +400,7 @@
         <div class="input-group">
             <label for="targetVolumeInput" data-lang-key="targetVolumeLabel">目標體積:</label>
             <div class="input-field-wrapper">
-                <input type="number" id="targetVolumeInput" data-lang-key-placeholder="targetVolumePlaceholder" placeholder="例如：1000" class="input-field">
+                <input type="number" id="targetVolumeInput" data-lang-key-placeholder="targetVolumePlaceholder" placeholder="請輸入稀釋液總容量" class="input-field">
                 <select id="targetVolumeUnitInput" class="unit-select">
                     <option value="ml" data-lang-key="unitML">毫升 (ml)</option>
                     <option value="L" selected data-lang-key="unitL">公升 (L)</option>
@@ -461,9 +463,9 @@
                 initialConcentrationLabel: "原液濃度 (ppm):",
                 initialConcentrationPlaceholder: "例如：1000",
                 targetConcentrationLabel: "目標濃度 (ppm):",
-                targetConcentrationPlaceholder: "例如：100",
+                targetConcentrationPlaceholder: "請輸入稀釋的目標濃度", // 更新
                 targetVolumeLabel: "目標體積:",
-                targetVolumePlaceholder: "例如：1000",
+                targetVolumePlaceholder: "請輸入稀釋液總容量", // 更新
                 unitML: "毫升 (ml)",
                 unitL: "公升 (L)",
                 unitT: "公噸 (t)",
@@ -494,9 +496,9 @@
                 initialConcentrationLabel: "Stock Conc. (ppm):",
                 initialConcentrationPlaceholder: "e.g., 1000",
                 targetConcentrationLabel: "Target Conc. (ppm):",
-                targetConcentrationPlaceholder: "e.g., 100",
+                targetConcentrationPlaceholder: "Enter target concentration for dilution", // 更新
                 targetVolumeLabel: "Target Volume:",
-                targetVolumePlaceholder: "e.g., 1000",
+                targetVolumePlaceholder: "Enter total volume of diluted solution", // 更新
                 unitML: "milliliter (ml)",
                 unitL: "liter (L)",
                 unitT: "metric ton (t)",
