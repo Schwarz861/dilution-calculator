@@ -7,8 +7,10 @@
     <style>
         /* CSS 變數定義 */
         :root {
-            --bg-color: #f0f4f8;
-            --container-bg-color: white;
+            --bg-color: #f0f4f8; /* Fallback if gradient not supported or preferred */
+            --body-bg-light: linear-gradient(120deg, #fdfbfb 0%, #e2ebf0 100%);
+            --container-bg-color-light-frost: rgba(255, 255, 255, 0.75); /* Opacity for frost effect */
+            --container-border-light: rgba(200, 200, 200, 0.3);
             --text-color: #2c3e50;
             --label-color: #34495e;
             --input-bg-color: white;
@@ -17,7 +19,7 @@
             --input-focus-border-color: #3498db;
             --select-bg-color: white;
             --button-bg-color: #3498db;
-            --button-text-color: white;
+            --button-text-color: white; /* 淺色模式按鈕文字顏色 */
             --button-hover-bg-color: #2980b9;
             --secondary-button-bg-color: #7f8c8d;
             --secondary-button-hover-bg-color: #6c7a7b;
@@ -36,11 +38,14 @@
             --toggle-button-text-color: #333;
             --toggle-button-border-color: #ccc;
             --toggle-button-hover-bg: #d0d0d0;
+            --container-shadow: 0 8px 22px 0 rgba(31, 38, 135, 0.2); /* Softer shadow */
         }
 
         body.dark-mode {
-            --bg-color: #1e2732;
-            --container-bg-color: #2c3e50;
+            --bg-color: #1e2732; /* Fallback */
+            --body-bg-dark: linear-gradient(to right top, #0f2027, #203a43, #2c5364);
+            --container-bg-color-dark-frost: rgba(44, 62, 80, 0.65); 
+            --container-border-dark: rgba(120, 140, 160, 0.3);
             --text-color: #ecf0f1;
             --label-color: #bdc3c7;
             --input-bg-color: #34495e;
@@ -49,7 +54,7 @@
             --input-focus-border-color: #5dade2;
             --select-bg-color: #34495e;
             --button-bg-color: #5dade2;
-            --button-text-color: #1c2833;
+            --button-text-color: #f0f0f0; /* 深色模式按鈕文字顏色 - 改為淺灰色以提高對比度 */
             --button-hover-bg-color: #85c1e9;
             --secondary-button-bg-color: #566573;
             --secondary-button-hover-bg-color: #6c7f93;
@@ -68,6 +73,7 @@
             --toggle-button-text-color: #ecf0f1;
             --toggle-button-border-color: #788ca0;
             --toggle-button-hover-bg: #6c7f93;
+            --container-shadow: 0 8px 22px 0 rgba(0, 0, 0, 0.25);
         }
 
         /* 基本樣式 */
@@ -75,32 +81,46 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-color);
+            background-color: var(--bg-color); 
+            background-image: var(--body-bg-light); 
             color: var(--text-color);
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: flex-start; 
             min-height: 100vh;
-            padding-top: 30px;
+            padding: 30px 15px; 
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-image 0.3s, color 0.3s; 
         }
+        body.dark-mode {
+            background-image: var(--body-bg-dark); 
+        }
+
         .container {
             width: 100%;
-            max-width: 580px;
+            max-width: 600px; 
             margin: 0 auto;
-            padding: 25px 30px;
-            background-color: var(--container-bg-color);
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
+            padding: 30px 35px; 
+            background-color: var(--container-bg-color-light-frost); 
+            border: 1px solid var(--container-border-light);
+            border-radius: 15px; 
+            box-shadow: var(--container-shadow);
+            backdrop-filter: blur(12px) saturate(150%); 
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
+        body.dark-mode .container {
+            background-color: var(--container-bg-color-dark-frost);
+            border: 1px solid var(--container-border-dark);
+        }
+
         h1 {
             text-align: center;
             color: var(--text-color);
             margin-bottom: 30px;
-            font-size: 24px;
+            font-size: 26px; 
             line-height: 1.3; 
+            font-weight: 600;
         }
         .input-group {
             margin-bottom: 20px;
@@ -108,7 +128,7 @@
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
+            font-weight: 500; 
             color: var(--label-color);
             font-size: 15px;
         }
@@ -129,6 +149,7 @@
         }
         input[type="number"].input-field:focus {
             border-color: var(--input-focus-border-color);
+            box-shadow: 0 0 0 3px rgba(var(--input-focus-border-color), 0.3); 
             outline: none;
         }
         select.unit-select {
@@ -139,26 +160,36 @@
             color: var(--input-text-color);
             border-radius: 6px;
             font-size: 15px;
-            min-width: 80px;
+            min-width: 85px; 
             transition: border-color 0.3s ease, background-color 0.3s, color 0.3s;
         }
         .button-group {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+            gap: 12px; 
+            margin-top: 25px; 
         }
         button.action-button {
             padding: 12px 10px;
             color: var(--button-text-color);
             border: none;
-            border-radius: 6px;
+            border-radius: 8px; 
             cursor: pointer;
-            font-size: 15px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            text-align: center;
+            font-size: 16px; 
+            font-weight: 600; 
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2); /* 微調文字陰影 */
         }
+         body.dark-mode button.action-button {
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.35); /* 深色模式下陰影可略深 */
+        }
+        button.action-button:hover {
+            transform: translateY(-1px); 
+        }
+        button.action-button:active {
+            transform: translateY(0px);
+        }
+
         button.calculate-button {
             background-color: var(--button-bg-color);
         }
@@ -179,7 +210,7 @@
         }
 
         .settings-buttons {
-            margin-top: 25px;
+            margin-top: 30px; 
             display: flex;
             justify-content: space-around;
             gap: 10px;
@@ -190,21 +221,30 @@
             background-color: var(--toggle-button-bg);
             color: var(--toggle-button-text-color);
             border: 1px solid var(--toggle-button-border-color);
-            border-radius: 6px;
+            border-radius: 8px; 
             cursor: pointer;
             font-size: 14px;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.3s ease, border-color 0.3s ease, transform 0.1s ease;
+            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
             flex-basis: calc(50% - 5px);
             max-width: 200px;
         }
+         body.dark-mode button.toggle-button {
+            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+        }
         button.toggle-button:hover {
             background-color: var(--toggle-button-hover-bg);
+            transform: translateY(-1px);
+        }
+        button.toggle-button:active {
+            transform: translateY(0px);
         }
 
         .result {
             margin-top: 30px;
             padding: 20px;
-            border-radius: 6px;
+            border-radius: 10px; 
             transition: background-color 0.3s, border-color 0.3s, color 0.3s;
             background-color: var(--result-bg-color);
             border: 1px solid var(--result-border-color);
@@ -217,17 +257,19 @@
             padding-bottom: 10px;
             color: var(--result-header-color);
             border-bottom: 1px solid var(--result-border-color);
+            font-weight: 600;
         }
         .result p {
             margin: 10px 0;
             font-size: 16px;
-            line-height: 1.6;
+            line-height: 1.7; 
             display: flex; 
             align-items: center;
             flex-wrap: wrap;
         }
         .result p .result-value { 
             margin-right: 5px;
+            font-weight: 500;
         }
         select.result-unit-selector {
             padding: 4px 6px; 
@@ -236,11 +278,16 @@
             background-color: var(--result-unit-selector-bg);
             color: var(--input-text-color); 
             border-radius: 4px;
-            margin-left: 5px;
+            margin-left: 8px; 
         }
-        .result p strong {
-            color: var(--error-color);
+        .result p strong { 
+            font-weight: 600; 
+            color: var(--label-color); 
         }
+        body.dark-mode .result p strong {
+            color: var(--label-color);
+        }
+
         .error-message {
             color: var(--error-color);
             font-size: 14px;
@@ -253,7 +300,7 @@
             margin-top: 15px;
             font-size: 14px;
             min-height: 20px;
-            font-weight: bold;
+            font-weight: 500; 
         }
         .status-message.success {
             color: var(--success-color);
@@ -267,12 +314,16 @@
 
         /* 響應式設計 */
         @media (max-width: 600px) {
+            body {
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
             .container {
-                margin: 20px;
-                padding: 20px;
+                margin: 15px;
+                padding: 20px 25px;
             }
             h1 {
-                font-size: 20px;
+                font-size: 22px; 
             }
             input[type="number"].input-field,
             select.unit-select,
@@ -293,10 +344,17 @@
             }
             .settings-buttons button.toggle-button {
                  flex-basis: 100%;
+                 margin-bottom: 10px;
+            }
+             .settings-buttons button.toggle-button:last-child {
+                 margin-bottom: 0;
             }
             .result p {
-                flex-direction: column; 
-                align-items: flex-start;
+                /* For "您設定的目標總體積", keep it on one line if possible, others can wrap */
+            }
+            .result p:not(:first-child) { /* Target "所需原液量" and "需加入水量" */
+                 flex-direction: column; 
+                 align-items: flex-start;
             }
             select.result-unit-selector {
                 margin-left: 0;
@@ -668,13 +726,12 @@
                 errorSpans.calculation.textContent = translations[currentLanguage].errorCalculationInvalid;
                 calculationCache = {}; 
             } else {
-                let initialDisplayUnit = 'ml'; // 預設初始單位
-                // 根據目標體積單位和計算值大小決定更合適的初始統一單位
+                let initialDisplayUnit = 'ml'; 
                 if (targetVolumeUnitUser === 't') {
                     initialDisplayUnit = 't';
                 } else if (targetVolumeUnitUser === 'L') {
                     initialDisplayUnit = 'L';
-                } else { // targetVolumeUnitUser is 'ml'
+                } else { 
                     if (neededInitialVolumeInMl >= 1000000 || waterToAddInMl >= 1000000) {
                         initialDisplayUnit = 't';
                     } else if (neededInitialVolumeInMl >= 1000 || waterToAddInMl >= 1000) {
@@ -682,7 +739,6 @@
                     }
                 }
                 
-                // 如果計算值為0，單位應與目標體積單位一致
                 const stockUnitToSet = neededInitialVolumeInMl === 0 ? targetVolumeUnitUser : initialDisplayUnit;
                 const waterUnitToSet = waterToAddInMl === 0 ? targetVolumeUnitUser : initialDisplayUnit;
 
