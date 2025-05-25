@@ -625,31 +625,45 @@
         }
 
         function formatNumber(number, unit) {
-            let maxDigits = 3; 
+            if (number === 0) return "0";
+
+            let numStr;
+            let precision;
+
             if (unit === 'ml') {
-                if (Math.abs(number) > 0 && Math.abs(number) < 1) {
-                    maxDigits = 3; 
+                if (number % 1 === 0) { // 整數 ml
+                    return number.toString();
                 } else {
-                    maxDigits = 0; 
+                    // 對於帶小數的 ml，嘗試保留其原始精度，最多3位
+                    // 例如 1.5 -> "1.5", 0.05 -> "0.05", 0.005 -> "0.005"
+                    // 使用 toFixed 以確保小數位，然後 parseFloat().toString() 去除末尾不必要的0
+                    if (Math.abs(number) < 0.001) { // 非常非常小的值
+                        return number.toExponential(2); // 例如 0.0005ml -> 5.00e-4
+                    }
+                    precision = 3; // 最多顯示3位小數給ml
+                    numStr = parseFloat(number.toFixed(precision)).toString();
+                    return numStr;
                 }
-            } else if (number < 0.001 && number !== 0 && unit !== 't') {
-                 maxDigits = 5; 
-            } else if (unit === 't' && number !== 0) {
-                 maxDigits = 6; 
-            }
-            
-            let formatted = number.toLocaleString(undefined, {
-                minimumFractionDigits: (unit === 'ml' && Math.abs(number) > 0 && Math.abs(number) < 1) ? Math.min(3, Math.max(1, (number.toString().split('.')[1] || '').length)) : 0, 
-                maximumFractionDigits: maxDigits
-            });
+            } else { // L or t
+                if (Math.abs(number) < 1e-7 && Math.abs(number) !== 0) { // 極小值使用科學記號
+                    return number.toExponential(3);
+                }
+                precision = (unit === 'L') ? 5 : 7; // L 最多5位，t 最多7位
 
-            if (Math.abs(number) > 0 && parseFloat(formatted.replace(/,/g, '')) === 0 && unit === 'ml') {
-                 return number.toFixed(Math.min(3, Math.max(1, -Math.floor(Math.log10(Math.abs(number)))))); 
-            }
-            if (Math.abs(number) < 1e-9) return "0"; 
+                // 先用 toFixed 確保小數精度
+                numStr = number.toFixed(precision);
+                // 去除末尾的0和小數點（如果有的話）
+                numStr = parseFloat(numStr).toString(); 
 
-            return formatted;
+                // 對於較大的數值，加入千分位分隔符
+                const parts = numStr.split('.');
+                if (Math.abs(parseFloat(parts[0])) >= 1000) {
+                    parts[0] = parseFloat(parts[0]).toLocaleString(undefined, { useGrouping: true });
+                }
+                return parts.join('.');
+            }
         }
+
 
         function updateResultDisplay(valueType, newUnit) {
             if (Object.keys(calculationCache).length === 0) return;
