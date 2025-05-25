@@ -411,7 +411,6 @@
                 copySuccessText: "結果文字已複製到剪貼簿！",
                 copyFail: "複製失敗。您的瀏覽器可能不支援此操作或未授予權限。",
                 copyNoResult: "沒有結果可複製。",
-                // html2canvasNotLoaded key removed
             },
             en: {
                 pageTitle: "Hypochlorous Water Dilution Calculator", 
@@ -445,7 +444,6 @@
                 copySuccessText: "Results text copied to clipboard!",
                 copyFail: "Copy failed. Your browser might not support this or permission was denied.",
                 copyNoResult: "No results to copy.",
-                // html2canvasNotLoaded key removed
             }
         };
 
@@ -597,7 +595,7 @@
         
         // --- 同步結果單位並更新顯示 ---
         function synchronizeResultUnits(changedValueType, newUnit) {
-            updateResultDisplay(changedValueType, newUnit); // 更新被更改的項目
+            updateResultDisplay(changedValueType, newUnit);
 
             let otherValueType = (changedValueType === 'neededInitialVolume') ? 'waterToAdd' : 'neededInitialVolume';
             let otherUnitSelectorElement = (changedValueType === 'neededInitialVolume') ? resultWaterToAddUnitSelector : resultNeededInitialVolumeUnitSelector;
@@ -670,34 +668,29 @@
                 errorSpans.calculation.textContent = translations[currentLanguage].errorCalculationInvalid;
                 calculationCache = {}; 
             } else {
-                let defaultUnitStock = 'ml';
-                if (targetVolumeUnitUser === 't' || neededInitialVolumeInMl >= 1000000 * 0.5) { 
-                    defaultUnitStock = 't';
-                } else if (targetVolumeUnitUser === 'L' || neededInitialVolumeInMl >= 1000 * 0.5) { 
-                    defaultUnitStock = 'L';
-                } else if (neededInitialVolumeInMl < 1 && neededInitialVolumeInMl !==0) { 
-                     defaultUnitStock = 'ml';
-                } else if (neededInitialVolumeInMl === 0) {
-                    defaultUnitStock = targetVolumeUnitUser === 't' ? 't' : (targetVolumeUnitUser === 'L' ? 'L' : 'ml'); 
+                let initialDisplayUnit = 'ml'; // 預設初始單位
+                // 根據目標體積單位和計算值大小決定更合適的初始統一單位
+                if (targetVolumeUnitUser === 't') {
+                    initialDisplayUnit = 't';
+                } else if (targetVolumeUnitUser === 'L') {
+                    initialDisplayUnit = 'L';
+                } else { // targetVolumeUnitUser is 'ml'
+                    if (neededInitialVolumeInMl >= 1000000 || waterToAddInMl >= 1000000) {
+                        initialDisplayUnit = 't';
+                    } else if (neededInitialVolumeInMl >= 1000 || waterToAddInMl >= 1000) {
+                        initialDisplayUnit = 'L';
+                    }
                 }
-
-
-                let defaultUnitWater = 'ml';
-                 if (targetVolumeUnitUser === 't' || waterToAddInMl >= 1000000 * 0.5) {
-                    defaultUnitWater = 't';
-                } else if (targetVolumeUnitUser === 'L' || waterToAddInMl >= 1000 * 0.5) {
-                    defaultUnitWater = 'L';
-                } else if (waterToAddInMl < 1 && waterToAddInMl !==0) {
-                     defaultUnitWater = 'ml';
-                } else if (waterToAddInMl === 0) {
-                    defaultUnitWater = targetVolumeUnitUser === 't' ? 't' : (targetVolumeUnitUser === 'L' ? 'L' : 'ml');
-                }
-
-                resultNeededInitialVolumeUnitSelector.value = defaultUnitStock;
-                updateResultDisplay('neededInitialVolume', defaultUnitStock);
                 
-                resultWaterToAddUnitSelector.value = defaultUnitWater;
-                updateResultDisplay('waterToAdd', defaultUnitWater);
+                // 如果計算值為0，單位應與目標體積單位一致
+                const stockUnitToSet = neededInitialVolumeInMl === 0 ? targetVolumeUnitUser : initialDisplayUnit;
+                const waterUnitToSet = waterToAddInMl === 0 ? targetVolumeUnitUser : initialDisplayUnit;
+
+                resultNeededInitialVolumeUnitSelector.value = stockUnitToSet;
+                updateResultDisplay('neededInitialVolume', stockUnitToSet);
+                
+                resultWaterToAddUnitSelector.value = waterUnitToSet;
+                updateResultDisplay('waterToAdd', waterUnitToSet);
 
                 resultDiv.style.display = 'block';
             }
