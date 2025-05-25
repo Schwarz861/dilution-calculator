@@ -23,8 +23,8 @@
             --button-hover-bg-color: #2980b9;
             --secondary-button-bg-color: #7f8c8d;
             --secondary-button-hover-bg-color: #6c7a7b;
-            --tertiary-button-bg-color: #95a5a6;
-            --tertiary-button-hover-bg-color: #768687;
+            --tertiary-button-bg-color: #6c757d; /* 更新複製按鈕背景色(淺色模式) */
+            --tertiary-button-hover-bg-color: #5a6268; /* 更新複製按鈕懸停背景色(淺色模式) */
             --result-bg-color: #eaf5ff;
             --result-border-color: #aed6f1;
             --result-header-color: #2980b9;
@@ -58,8 +58,8 @@
             --button-hover-bg-color: #85c1e9;
             --secondary-button-bg-color: #566573;
             --secondary-button-hover-bg-color: #6c7f93;
-            --tertiary-button-bg-color: #788ca0;
-            --tertiary-button-hover-bg-color: #5f7081;
+            --tertiary-button-bg-color: #788ca0; /* 深色模式複製按鈕背景色 */
+            --tertiary-button-hover-bg-color: #5f7081; /* 深色模式複製按鈕懸停背景色 */
             --result-bg-color: #34495e;
             --result-border-color: #566573;
             --result-header-color: #5dade2;
@@ -178,10 +178,10 @@
             font-size: 16px; 
             font-weight: 600; 
             transition: background-color 0.2s ease, transform 0.1s ease;
-            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2); /* 微調文字陰影 */
+            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2); /* 統一文字陰影 */
         }
          body.dark-mode button.action-button {
-            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.35); /* 深色模式下陰影可略深 */
+            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3); /* 深色模式下陰影可略深一點 */
         }
         button.action-button:hover {
             transform: translateY(-1px); 
@@ -267,6 +267,11 @@
             align-items: center;
             flex-wrap: wrap;
         }
+        .result p .result-value-unit-pair { /* 新增的 class */
+            display: inline-flex; /* 讓數值和單位保持在同一行 */
+            align-items: baseline; /* 對齊基線 */
+            margin-left: 5px; /* 與標籤的間距 */
+        }
         .result p .result-value { 
             margin-right: 5px;
             font-weight: 500;
@@ -350,9 +355,9 @@
                  margin-bottom: 0;
             }
             .result p {
-                /* For "您設定的目標總體積", keep it on one line if possible, others can wrap */
+                /* "您設定的目標總體積" 保持 flex-direction: row (預設) */
             }
-            .result p:not(:first-child) { /* Target "所需原液量" and "需加入水量" */
+            .result p:not(:first-child) { /* "所需原液量" and "需加入水量" */
                  flex-direction: column; 
                  align-items: flex-start;
             }
@@ -405,7 +410,13 @@
 
         <div id="result" class="result" style="display: none;">
             <h2 data-lang-key="resultTitle">計算結果:</h2>
-            <p><span data-lang-key="resultTargetVolumeSetLabel">您設定的目標總體積：</span><span id="resultTargetVolumeSet" class="result-value"></span> <span id="resultTargetVolumeUnitSet"></span></p>
+            <p>
+                <span data-lang-key="resultTargetVolumeSetLabel">您設定的目標總體積：</span>
+                <span class="result-value-unit-pair">
+                    <span id="resultTargetVolumeSet" class="result-value"></span>
+                    <span id="resultTargetVolumeUnitSet"></span>
+                </span>
+            </p>
             <p>
                 <span data-lang-key="resultNeededInitialVolumeLabel">所需原液量：</span>
                 <span id="resultNeededInitialVolume" class="result-value"></span>
