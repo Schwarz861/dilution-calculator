@@ -7,9 +7,9 @@
     <style>
         /* CSS 變數定義 */
         :root {
-            --bg-color: #f0f4f8; /* Fallback if gradient not supported or preferred */
+            --bg-color: #f0f4f8; 
             --body-bg-light: linear-gradient(120deg, #fdfbfb 0%, #e2ebf0 100%);
-            --container-bg-color-light-frost: rgba(255, 255, 255, 0.75); /* Opacity for frost effect */
+            --container-bg-color-light-frost: rgba(255, 255, 255, 0.75); 
             --container-border-light: rgba(200, 200, 200, 0.3);
             --text-color: #2c3e50;
             --label-color: #34495e;
@@ -19,10 +19,10 @@
             --input-focus-border-color: #3498db;
             --select-bg-color: white;
             --button-bg-color: #3498db;
-            --button-text-color: white; /* 淺色模式按鈕文字顏色 */
+            --button-text-color: white; 
             --button-hover-bg-color: #2980b9;
-            --clear-button-bg-color: #f0ad4e; /* 清除按鈕新顏色 (淺色) */
-            --clear-button-hover-bg-color: #ec9c3d; /* 清除按鈕新懸停顏色 (淺色) */
+            --clear-button-bg-color: #f0ad4e; 
+            --clear-button-hover-bg-color: #ec9c3d; 
             --copy-button-bg-color: #6c757d; 
             --copy-button-hover-bg-color: #5a6268; 
             --result-bg-color: #eaf5ff;
@@ -38,11 +38,11 @@
             --toggle-button-text-color: #333;
             --toggle-button-border-color: #ccc;
             --toggle-button-hover-bg: #d0d0d0;
-            --container-shadow: 0 8px 22px 0 rgba(31, 38, 135, 0.2); /* Softer shadow */
+            --container-shadow: 0 8px 22px 0 rgba(31, 38, 135, 0.2); 
         }
 
         body.dark-mode {
-            --bg-color: #1e2732; /* Fallback */
+            --bg-color: #1e2732; 
             --body-bg-dark: linear-gradient(to right top, #0f2027, #203a43, #2c5364);
             --container-bg-color-dark-frost: rgba(44, 62, 80, 0.65); 
             --container-border-dark: rgba(120, 140, 160, 0.3);
@@ -54,10 +54,10 @@
             --input-focus-border-color: #5dade2;
             --select-bg-color: #34495e;
             --button-bg-color: #5dade2;
-            --button-text-color: #f0f0f0; /* 深色模式按鈕文字顏色 - 統一為淺灰色 */
+            --button-text-color: #f0f0f0; 
             --button-hover-bg-color: #85c1e9;
-            --clear-button-bg-color: #d99036; /* 清除按鈕新顏色 (深色) */
-            --clear-button-hover-bg-color: #c38130; /* 清除按鈕新懸停顏色 (深色) */
+            --clear-button-bg-color: #d99036; 
+            --clear-button-hover-bg-color: #c38130; 
             --copy-button-bg-color: #788ca0; 
             --copy-button-hover-bg-color: #5f7081; 
             --result-bg-color: #34495e;
@@ -212,9 +212,8 @@
         .settings-buttons {
             margin-top: 30px; 
             display: flex;
-            justify-content: space-between; /* 改為 space-between 使按鈕分散對齊 */
+            justify-content: space-between; 
             gap: 10px;
-            /* flex-wrap: wrap; (移除，讓按鈕優先在同一行) */
         }
         button.toggle-button {
             padding: 10px 15px;
@@ -227,9 +226,9 @@
             font-weight: 500;
             transition: background-color 0.2s ease, color 0.3s ease, border-color 0.3s ease, transform 0.1s ease;
             text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
-            flex-grow: 1; /* 讓按鈕平均分配空間 */
-            flex-basis: 0; /* 允許按鈕縮小 */
-            min-width: 120px; /* 設定最小寬度 */
+            flex-grow: 1; 
+            flex-basis: 0; 
+            min-width: 120px; 
             text-align: center;
         }
          body.dark-mode button.toggle-button {
@@ -366,13 +365,10 @@
             }
             .result p:not(:first-child) .result-value-group { 
                 /* 允許帶有選擇器的行在空間不足時，選擇器可以換到下一行 */
-                 /* display: block; (如果需要強制換行) */
-                 /* width: 100%; (如果需要強制換行) */
             }
             select.result-unit-selector {
                 /* margin-left: 0; (如果上面 display:block) */
                 /* margin-top: 5px; (如果上面 display:block) */
-                /* width: 100%; (如果上面 display:block) */
             }
         }
     </style>
@@ -463,9 +459,9 @@
                 initialConcentrationLabel: "原液濃度 (ppm):",
                 initialConcentrationPlaceholder: "例如：1000",
                 targetConcentrationLabel: "目標濃度 (ppm):",
-                targetConcentrationPlaceholder: "請輸入稀釋的目標濃度", // 更新
+                targetConcentrationPlaceholder: "請輸入稀釋的目標濃度", 
                 targetVolumeLabel: "目標體積:",
-                targetVolumePlaceholder: "請輸入稀釋液總容量", // 更新
+                targetVolumePlaceholder: "請輸入稀釋液總容量", 
                 unitML: "毫升 (ml)",
                 unitL: "公升 (L)",
                 unitT: "公噸 (t)",
@@ -496,9 +492,9 @@
                 initialConcentrationLabel: "Stock Conc. (ppm):",
                 initialConcentrationPlaceholder: "e.g., 1000",
                 targetConcentrationLabel: "Target Conc. (ppm):",
-                targetConcentrationPlaceholder: "Enter target concentration for dilution", // 更新
+                targetConcentrationPlaceholder: "Enter target concentration for dilution", 
                 targetVolumeLabel: "Target Volume:",
-                targetVolumePlaceholder: "Enter total volume of diluted solution", // 更新
+                targetVolumePlaceholder: "Enter total volume of diluted solution", 
                 unitML: "milliliter (ml)",
                 unitL: "liter (L)",
                 unitT: "metric ton (t)",
@@ -629,19 +625,29 @@
         }
 
         function formatNumber(number, unit) {
-            let maxDigits = 3;
-            if (unit === 'ml') maxDigits = 0;
-            if (number < 0.001 && number !== 0 && unit !== 't') maxDigits = 5;
-            if (unit === 't' && number !==0) maxDigits = 6;
+            let maxDigits = 3; 
+            if (unit === 'ml') {
+                if (Math.abs(number) > 0 && Math.abs(number) < 1) {
+                    maxDigits = 3; 
+                } else {
+                    maxDigits = 0; 
+                }
+            } else if (number < 0.001 && number !== 0 && unit !== 't') {
+                 maxDigits = 5; 
+            } else if (unit === 't' && number !== 0) {
+                 maxDigits = 6; 
+            }
             
             let formatted = number.toLocaleString(undefined, {
-                minimumFractionDigits: 0, 
+                minimumFractionDigits: (unit === 'ml' && Math.abs(number) > 0 && Math.abs(number) < 1) ? Math.min(3, Math.max(1, (number.toString().split('.')[1] || '').length)) : 0, 
                 maximumFractionDigits: maxDigits
             });
-            if (Math.abs(number) < 1e-5 && unit !== 't') {
-                 if (Math.abs(number) < 1e-9) return "0";
-                 return number.toFixed(maxDigits);
+
+            if (Math.abs(number) > 0 && parseFloat(formatted.replace(/,/g, '')) === 0 && unit === 'ml') {
+                 return number.toFixed(Math.min(3, Math.max(1, -Math.floor(Math.log10(Math.abs(number)))))); 
             }
+            if (Math.abs(number) < 1e-9) return "0"; 
+
             return formatted;
         }
 
