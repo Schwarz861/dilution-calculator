@@ -21,10 +21,10 @@
             --button-bg-color: #3498db;
             --button-text-color: white; /* 淺色模式按鈕文字顏色 */
             --button-hover-bg-color: #2980b9;
-            --secondary-button-bg-color: #7f8c8d;
-            --secondary-button-hover-bg-color: #6c7a7b;
-            --tertiary-button-bg-color: #6c757d; /* 更新複製按鈕背景色(淺色模式) */
-            --tertiary-button-hover-bg-color: #5a6268; /* 更新複製按鈕懸停背景色(淺色模式) */
+            --clear-button-bg-color: #f0ad4e; /* 清除按鈕新顏色 (淺色) */
+            --clear-button-hover-bg-color: #ec9c3d; /* 清除按鈕新懸停顏色 (淺色) */
+            --copy-button-bg-color: #6c757d; 
+            --copy-button-hover-bg-color: #5a6268; 
             --result-bg-color: #eaf5ff;
             --result-border-color: #aed6f1;
             --result-header-color: #2980b9;
@@ -54,12 +54,12 @@
             --input-focus-border-color: #5dade2;
             --select-bg-color: #34495e;
             --button-bg-color: #5dade2;
-            --button-text-color: #f0f0f0; /* 深色模式按鈕文字顏色 - 改為淺灰色以提高對比度 */
+            --button-text-color: #f0f0f0; /* 深色模式按鈕文字顏色 - 統一為淺灰色 */
             --button-hover-bg-color: #85c1e9;
-            --secondary-button-bg-color: #566573;
-            --secondary-button-hover-bg-color: #6c7f93;
-            --tertiary-button-bg-color: #788ca0; /* 深色模式複製按鈕背景色 */
-            --tertiary-button-hover-bg-color: #5f7081; /* 深色模式複製按鈕懸停背景色 */
+            --clear-button-bg-color: #d99036; /* 清除按鈕新顏色 (深色) */
+            --clear-button-hover-bg-color: #c38130; /* 清除按鈕新懸停顏色 (深色) */
+            --copy-button-bg-color: #788ca0; 
+            --copy-button-hover-bg-color: #5f7081; 
             --result-bg-color: #34495e;
             --result-border-color: #566573;
             --result-header-color: #5dade2;
@@ -178,10 +178,10 @@
             font-size: 16px; 
             font-weight: 600; 
             transition: background-color 0.2s ease, transform 0.1s ease;
-            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2); /* 統一文字陰影 */
+            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2); 
         }
          body.dark-mode button.action-button {
-            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3); /* 深色模式下陰影可略深一點 */
+            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3); 
         }
         button.action-button:hover {
             transform: translateY(-1px); 
@@ -197,16 +197,16 @@
             background-color: var(--button-hover-bg-color);
         }
         button.clear-button {
-            background-color: var(--secondary-button-bg-color);
+            background-color: var(--clear-button-bg-color); /* 使用新的清除按鈕顏色變數 */
         }
         button.clear-button:hover {
-            background-color: var(--secondary-button-hover-bg-color);
+            background-color: var(--clear-button-hover-bg-color); /* 使用新的清除按鈕懸停顏色變數 */
         }
         button.copy-button {
-            background-color: var(--tertiary-button-bg-color);
+            background-color: var(--copy-button-bg-color); /* 使用複製按鈕顏色變數 */
         }
         button.copy-button:hover {
-            background-color: var(--tertiary-button-hover-bg-color);
+            background-color: var(--copy-button-hover-bg-color); /* 使用複製按鈕懸停顏色變數 */
         }
 
         .settings-buttons {
@@ -264,13 +264,18 @@
             font-size: 16px;
             line-height: 1.7; 
             display: flex; 
-            align-items: center;
+            align-items: baseline; /* 改為 baseline 以更好地對齊文字和選擇器 */
             flex-wrap: wrap;
         }
-        .result p .result-value-unit-pair { /* 新增的 class */
-            display: inline-flex; /* 讓數值和單位保持在同一行 */
-            align-items: baseline; /* 對齊基線 */
-            margin-left: 5px; /* 與標籤的間距 */
+        .result p .result-label { /* 新增 class 給標籤文字 */
+            margin-right: 8px; /* 標籤和數值間的距離 */
+            flex-shrink: 0; /* 防止標籤文字被壓縮 */
+        }
+        .result p .result-value-group { /* 包裹數值和單位/選擇器 */
+            display: inline-flex; 
+            align-items: baseline; 
+            flex-grow: 1; /* 允許佔用剩餘空間 */
+            min-width: 100px; /* 避免過度壓縮 */
         }
         .result p .result-value { 
             margin-right: 5px;
@@ -355,16 +360,17 @@
                  margin-bottom: 0;
             }
             .result p {
-                /* "您設定的目標總體積" 保持 flex-direction: row (預設) */
+                /* 維持 flex-direction: row; align-items: baseline; 以嘗試同行顯示 */
             }
-            .result p:not(:first-child) { /* "所需原液量" and "需加入水量" */
-                 flex-direction: column; 
-                 align-items: flex-start;
+            .result p:not(:first-child) .result-value-group { 
+                /* 對於帶有選擇器的行，如果空間不足，允許選擇器換行 */
+                 /* display: block;  若要強制換行選擇器，可取消此註解 */
+                 /* width: 100%; */
             }
             select.result-unit-selector {
-                margin-left: 0;
-                margin-top: 5px;
-                width: 100%; 
+                /* margin-left: 0; (如果上面 display:block，則不需要) */
+                /* margin-top: 5px; (如果上面 display:block，則不需要) */
+                /* width: 100%; (如果上面 display:block，則不需要) */
             }
         }
     </style>
@@ -411,29 +417,30 @@
         <div id="result" class="result" style="display: none;">
             <h2 data-lang-key="resultTitle">計算結果:</h2>
             <p>
-                <span data-lang-key="resultTargetVolumeSetLabel">您設定的目標總體積：</span>
-                <span class="result-value-unit-pair">
-                    <span id="resultTargetVolumeSet" class="result-value"></span>
+                <span data-lang-key="resultTargetVolumeSetLabel" class="result-label">您設定的目標總體積：</span>
+                <span class="result-value-group"> <span id="resultTargetVolumeSet" class="result-value"></span>
                     <span id="resultTargetVolumeUnitSet"></span>
                 </span>
             </p>
             <p>
-                <span data-lang-key="resultNeededInitialVolumeLabel">所需原液量：</span>
-                <span id="resultNeededInitialVolume" class="result-value"></span>
-                <select id="resultNeededInitialVolumeUnitSelector" class="result-unit-selector" onchange="synchronizeResultUnits('neededInitialVolume', this.value)">
-                    <option value="ml">ml</option>
-                    <option value="L">L</option>
-                    <option value="t">t</option>
-                </select>
+                <span data-lang-key="resultNeededInitialVolumeLabel" class="result-label">所需原液量：</span>
+                <span class="result-value-group"> <span id="resultNeededInitialVolume" class="result-value"></span>
+                    <select id="resultNeededInitialVolumeUnitSelector" class="result-unit-selector" onchange="synchronizeResultUnits('neededInitialVolume', this.value)">
+                        <option value="ml">ml</option>
+                        <option value="L">L</option>
+                        <option value="t">t</option>
+                    </select>
+                </span>
             </p>
             <p>
-                <strong><span data-lang-key="resultWaterToAddLabel">需加入水量：</span></strong>
-                <span id="resultWaterToAdd" class="result-value"></span>
-                <select id="resultWaterToAddUnitSelector" class="result-unit-selector" onchange="synchronizeResultUnits('waterToAdd', this.value)">
-                    <option value="ml">ml</option>
-                    <option value="L">L</option>
-                    <option value="t">t</option>
-                </select>
+                <strong class="result-label"><span data-lang-key="resultWaterToAddLabel">需加入水量：</span></strong>
+                 <span class="result-value-group"> <span id="resultWaterToAdd" class="result-value"></span>
+                    <select id="resultWaterToAddUnitSelector" class="result-unit-selector" onchange="synchronizeResultUnits('waterToAdd', this.value)">
+                        <option value="ml">ml</option>
+                        <option value="L">L</option>
+                        <option value="t">t</option>
+                    </select>
+                </span>
             </p>
         </div>
         <div id="calculationError" class="error-message" style="text-align: center; margin-top: 15px; font-weight: bold;"></div>
